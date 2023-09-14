@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bound.Tablet.ViewModels;assembly=Bound.Tablet"
+             x:Class="Bound.Tablet.Views.MachinesPage" BackgroundImageSource="Bound1.png">
+
+    <ContentPage.BindingContext>
+        <viewModels:MachinePageViewModel/>
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" FontSize="16" Text="Chose you machine: " TextColor="GreenYellow"/>
+
+        <StackLayout Orientation="Vertical" Grid.Row="1">
+            <StackLayout Orientation="Horizontal">
+                <ImageButton Source="ChestMachine"
+                     HorizontalOptions="CenterAndExpand"  
+                     Clicked="ImageButton_Clicked"
+                     WidthRequest="100" 
+                     HeightRequest="100" 
+                     Grid.Row="1" 
+                     CornerRadius ="20"
+                     BackgroundColor="Wheat" />
+
+                <ImageButton Source="ShoulderMachine"
+                     HorizontalOptions="CenterAndExpand"  
+                     Clicked="ImageButton_Clicked"
+                     WidthRequest="100" 
+                     HeightRequest="100" 
+                     Grid.Row="1" 
+                     CornerRadius ="20"
+                     BackgroundColor="Wheat"/>
+            </StackLayout>
+        </StackLayout>
+
+        <StackLayout Orientation="Vertical" Grid.Row="3">
+            <StackLayout Orientation="Horizontal">
+                <ImageButton Source="BicepsMachine"
+                     HorizontalOptions="CenterAndExpand"  
+                     Clicked="ImageButton_Clicked"
+                     WidthRequest="100" 
+                     Grid.Row="1" 
+                     CornerRadius ="20"
+                     BackgroundColor="Wheat"/>
+                <ImageButton Source="BicepsMachine" 
+                     HorizontalOptions="CenterAndExpand"  
+                     Clicked="ImageButton_Clicked"
+                     CornerRadius ="20" 
+                     WidthRequest="100" 
+                     Grid.Row="1" 
+                     BackgroundColor="Wheat"/>
+            </StackLayout>
+        </StackLayout>
+        <ImageButton Source="backbutton" Grid.Row="3"
+                     HorizontalOptions="CenterAndExpand"  
+                     Clicked="ImageButtonBack_Clicked"
+                     WidthRequest="50"
+                     BackgroundColor="Transparent"/>
+
+    </Grid>
+</ContentPage>

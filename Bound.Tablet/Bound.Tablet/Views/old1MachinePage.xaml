@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bound.Tablet.ViewModels;assembly=Bound.Tablet"
+             x:Class="Bound.Tablet.Views.MachinePage" BackgroundImageSource="Bound1.png">
+
+    <ContentPage.BindingContext>
+        <viewModels:MachinePageViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+
+        <Label FontSize="22" Text="Chose you machine: " TextColor="GreenYellow"/>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="EndAndExpand" >
+            <StackLayout Grid.Row="1">
+                <ImageButton Source="ShoulderMachine"
+                     Clicked="ImageButtonNFC_Clicked"
+                     HorizontalOptions="CenterAndExpand"  
+                     WidthRequest="100" 
+                     HeightRequest="100"  
+                     Grid.Row="1" 
+                     BackgroundColor="Transparent"
+                     />
+                <ImageButton Source="{Binding ImageNFC}" 
+                     HorizontalOptions="CenterAndExpand"  
+                     WidthRequest="100" 
+                     HeightRequest="100"  
+                     BackgroundColor="Transparent"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1">
+                <ImageButton Source="ChestLayUp"
+                     Clicked="ImageButtonNFC_Clicked"
+                     HorizontalOptions="CenterAndExpand"  
+                     WidthRequest="100" 
+                     HeightRequest="100"  
+                     Grid.Row="1" 
+                     BackgroundColor="Transparent"
+                     />
+                <ImageButton Source="{Binding ImageNFC}" 
+                     HorizontalOptions="CenterAndExpand"  
+                     WidthRequest="100" 
+                     HeightRequest="100"  
+                     BackgroundColor="Transparent"/>
+            </StackLayout>
+
+            <StackLayout>
+                <ImageButton Source="ShouldersOverHead" 
+                     Clicked="ImageButtonNFC_Clicked"
+                     HorizontalOptions="CenterAndExpand"  
+                     WidthRequest="100" 
+                     HeightRequest="100"  
+                     Grid.Row="1" 
+                     BackgroundColor="Transparent"
+                     />
+                <ImageButton Source="{Binding ImageNFC}" 
+                     HorizontalOptions="CenterAndExpand"  
+                     WidthRequest="100" 
+                     HeightRequest="100"  
+                     Grid.Row="1" 
+                     x:Name="ImageButtonNFC"
+                     BackgroundColor="Transparent"/>
+
+            </StackLayout>
+        </StackLayout>
+    </Grid>
+</ContentPage>

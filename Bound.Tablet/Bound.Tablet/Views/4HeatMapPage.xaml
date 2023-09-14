@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bound.Tablet.ViewModels;assembly=Bound.Tablet"
+             x:Class="Bound.Tablet.Views.HeatMapPage" BackgroundColor="Black">
+
+    <ContentPage.BindingContext>
+        <viewModels:HeatMapPageViewModel />
+    </ContentPage.BindingContext>
+    <Grid>
+
+        <ImageButton Source="HeatmapBody1.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="0" 
+                     BackgroundColor="Transparent"
+                     x:Name="ButtonShoulders" 
+                     />
+
+        <ImageButton Source="HeatmapBody2.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="1" 
+                     BackgroundColor="Transparent"
+                     Clicked="ButtonShoulders_Clicked"
+                     />
+
+        <ImageButton Source="HeatmapBody3.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="2" 
+                     BackgroundColor="Transparent"
+                     />
+
+        <ImageButton Source="HeatmapBody4.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="3" 
+                     BackgroundColor="Transparent"
+                     />
+
+        <ImageButton Source="HeatmapBody5.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="4" 
+                     BackgroundColor="Transparent"
+                     />
+
+        <ImageButton Source="HeatmapBody6.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="5" 
+                     BackgroundColor="Transparent"
+                     />
+
+        <ImageButton Source="HeatmapBody7.jpg" 
+                     HorizontalOptions="CenterAndExpand"
+                     Grid.Row="6" 
+                     BackgroundColor="Transparent"
+                     BorderColor="Black"
+                     />
+
+        <ImageButton Source="HeatmapBody8.jpg" 
+                     HorizontalOptions="Center"
+                     Grid.Row="7" 
+                     BackgroundColor="Transparent"
+                     x:Name="HeatMapBody8"                      
+                     Clicked="ButtonFeet_Clicked"/>
+    </Grid>
+
+</ContentPage>

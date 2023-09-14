@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bound.Tablet.ViewModels;assembly=Bound.Tablet"
+             x:Class="Bound.Tablet.Views.NFCSettingsPage" BackgroundImageSource="Bound1.png">
+
+    <ContentPage.BindingContext>
+        <viewModels:NFCSettingsPageViewModel />
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        
+            <Label x:Name="LabelNFCTagText" Text="NFC tag name" Grid.Row="0" TextColor="White"/>
+            <Entry x:Name="EntryNFCTagName" Grid.Row="1" BackgroundColor="White"/>
+            <Button x:Name="ButtonSetNFCTagName" Clicked="ButtonSetNFCTagName_Clicked" Text="Set NFC tag name" Grid.Row="2"/>
+        
+        
+    </Grid>
+
+</ContentPage>

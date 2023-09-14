@@ -1,0 +1,82 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <UserSecretsId>4f245830-0b58-40cd-881c-51d8613ece7a</UserSecretsId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="oldApp.xaml.cs" />
+    <Compile Remove="oldMainPage.xaml.cs" />
+    <Compile Remove="Views\1MachinePage.xaml.cs" />
+    <Compile Remove="Views\old1MachinePage.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Views\1MachinePage.xaml" />
+    <EmbeddedResource Remove="Views\old1MachinePage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="oldApp.xamld" />
+    <None Remove="oldMainPage.xamld" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.2.0" />
+	  <PackageReference Include="Microsoft.Azure.Devices" Version="1.18.1" />
+	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="RestSharp" Version="106.11.7" />
+    <PackageReference Include="System.Net.Mqtt" Version="0.6.3-beta" />
+	  <PackageReference Include="Microsoft.Azure.Devices" Version="1.18.1" />
+	  <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.21.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bound.NFC\Bound.NFC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\1SignInPage.xaml.cs">
+      <DependentUpon>1SignInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\3MachinesPage.xaml.cs">
+      <DependentUpon>3MachinesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NFCSettingsPage.xaml.cs">
+      <DependentUpon>NFCSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\4HeatMapPage.xaml.cs">
+      <DependentUpon>4HeatMapPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\2ExercisePage.xaml.cs">
+      <DependentUpon>2ExercisePage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\NFCSettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\4HeatMapPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\2ExercisePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
