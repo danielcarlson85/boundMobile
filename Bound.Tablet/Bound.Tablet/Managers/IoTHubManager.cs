@@ -24,7 +24,7 @@ namespace Devicemanager.API.Managers
 {
     public class IoTHubManager : IIoTHubManager
     {
-        readonly string ioTHubConnectionString = "HostName=boundiothub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=R9Vrz6beac9GeyTqYtL+e9YqklvZ4GPpRPmGejPzkdA=";
+        readonly string ioTHubConnectionString = "HostName=boundiothub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Ytv0bSvktmjBB0pL2Do1SPZLbkCl2QbpYAIoTMJr7v0=";
 
         public IoTHubManager()
         {
