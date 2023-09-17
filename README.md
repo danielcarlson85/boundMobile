@@ -1,20 +1,16 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Make sure Bound IDP Microservice is published to Azure
+Make sure Bound IotHub Microservice is published on Azure
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+1. Start Bound.Device.sln
+    Update connectionstring (string ChestMachine) in program.cs
+    run with F5
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+3. Start Bound.AlgorithmService
+    Make sure AlgorithmService.IotHubFunctions project is set to startup project
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+2. Start Bound.Mobile.sln
+    Update (ioTHubConnectionString) to your own in Bound.Tablet.Settings.Constants.cs
+    Run with F5
+   Make sure you have a nft tag with ChestMachine as text programmed
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Login on mobile with info@danielcarlson.net and pass Bound2023
