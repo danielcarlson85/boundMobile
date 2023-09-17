@@ -1,8 +1,7 @@
-﻿using Bound.Tablet.Views;
-using Bound.NFC;
+﻿using Bound.NFC;
+using Bound.Tablet.Views;
 using Plugin.NFC;
 using System.Linq;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Bound.Tablet.ViewModels
@@ -31,6 +30,7 @@ namespace Bound.Tablet.ViewModels
         void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             var machineNameFromTag = tagInfo.Records.First();
+
             App.DeviceData.MachineName = machineNameFromTag.Message;
             Application.Current.MainPage = new ExercisePage();
         }

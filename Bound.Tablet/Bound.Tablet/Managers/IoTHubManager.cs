@@ -19,17 +19,17 @@ using System.Threading.Tasks;
 using IotHubConnectionStringBuilder = Microsoft.Azure.Devices.Client.IotHubConnectionStringBuilder;
 using Message = Microsoft.Azure.Devices.Client.Message;
 using TransportType = Microsoft.Azure.Devices.Client.TransportType;
+using Bound.Tablet.Settings;
 
 namespace Devicemanager.API.Managers
 {
     public class IoTHubManager : IIoTHubManager
     {
-        readonly string ioTHubConnectionString = "HostName=boundiothub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Ytv0bSvktmjBB0pL2Do1SPZLbkCl2QbpYAIoTMJr7v0=";
 
         public IoTHubManager()
         {
-            this.IoTHubConnectionString = ioTHubConnectionString;
-            this.RegistryManager = RegistryManager.CreateFromConnectionString(ioTHubConnectionString);
+            this.IoTHubConnectionString = Constants.ioTHubConnectionString;
+            this.RegistryManager = RegistryManager.CreateFromConnectionString(IoTHubConnectionString);
         }
 
         private RegistryManager RegistryManager { get; set; }
