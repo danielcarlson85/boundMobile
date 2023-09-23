@@ -2,6 +2,7 @@
 using Bound.Tablet.Models;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -13,6 +14,7 @@ namespace Bound.Tablet.ViewModels
         readonly IoTHubManager ioTHubManager;
         IoTHubDevice device;
         System.Timers.Timer timer;
+        DateTime timeOfStart; 
 
         public ExercisePageViewModel()
         {
@@ -67,8 +69,12 @@ namespace Bound.Tablet.ViewModels
 
         public async Task ButtonStart_Clicked()
         {
-            if (device.Device.ConnectionState == DeviceConnectionState.Connected && !device.IsRunning)
+            var time = GetTimeDifference(timeOfStart, DateTime.Now);
+
+            if (device.Device.ConnectionState == DeviceConnectionState.Connected && !device.IsRunning && time)
             {
+                timeOfStart = DateTime.Now;
+
                 CommonMethods.Vibrate();
                 if (device.Device.ConnectionState == DeviceConnectionState.Connected)
                 {
@@ -91,6 +97,19 @@ namespace Bound.Tablet.ViewModels
                 _ = await ioTHubManager.SendStopRequestToDevice(device);
                 Debug.WriteLine("Device stopped: " + App.DeviceData.MachineName);
             }
+        }
+
+        bool GetTimeDifference(DateTime start, DateTime stop)
+        {
+            TimeSpan timeDifference = stop - start;
+            double seconds = timeDifference.TotalSeconds;
+
+            if (seconds > 10)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
