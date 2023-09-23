@@ -6,6 +6,8 @@ namespace Bound.Tablet.Models
     {
         public Device Device { get; set; }
 
+        public bool IsRunning { get; set; }
+
         public string DeviceName { get; set; }
 
         public string Value { get; set; }

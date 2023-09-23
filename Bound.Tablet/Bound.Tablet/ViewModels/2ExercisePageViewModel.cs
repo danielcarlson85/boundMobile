@@ -1,7 +1,7 @@
-﻿using Bound.Tablet.Models;
+﻿using Bound.NFC;
+using Bound.Tablet.Models;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
-using Bound.NFC;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -52,38 +52,45 @@ namespace Bound.Tablet.ViewModels
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
             {
-                if (device.Device.ConnectionState == DeviceConnectionState.Connected)
+                if (device.Device.ConnectionState == DeviceConnectionState.Connected && device.IsRunning)
                 {
                     LabelTime++;
+                    LabelDeviceIsRunning = Color.GreenYellow;
                 }
                 else
                 {
                     LabelTime = 0;
+                    LabelDeviceIsRunning = Color.Red;
                 }
             };
         }
 
         public async Task ButtonStart_Clicked()
         {
-            CommonMethods.Vibrate();
-            device = await ioTHubManager.Get(App.DeviceData.MachineName);
-            if (device.Device.ConnectionState == DeviceConnectionState.Connected)
+            if (device.Device.ConnectionState == DeviceConnectionState.Connected && !device.IsRunning)
             {
-                timer.Start();
-                LabelDeviceIsRunning = Color.GreenYellow;
+                CommonMethods.Vibrate();
+                if (device.Device.ConnectionState == DeviceConnectionState.Connected)
+                {
+                    timer.Start();
+                    device.IsRunning = true;
+                }
+                Debug.WriteLine("Device started: " + App.DeviceData.MachineName);
+                await ioTHubManager.SendStartRequestToDevice(device);
             }
-            Debug.WriteLine("Device started: " + App.DeviceData.MachineName);
-            await ioTHubManager.SendStartRequestToDevice(device);
         }
         public async Task ButtonStop_Clicked()
         {
-            CommonMethods.Vibrate();
-            timer.Stop();
-            LabelTime = 0;
-            device = await ioTHubManager.Get(App.DeviceData.MachineName);
-            LabelDeviceIsRunning = Color.Red;
-            _ = await ioTHubManager.SendStopRequestToDevice(device);
-            Debug.WriteLine("Device stopped: " + App.DeviceData.MachineName);
+            if (device.Device.ConnectionState == DeviceConnectionState.Connected && device.IsRunning)
+            {
+                CommonMethods.Vibrate();
+                timer.Stop();
+                device.IsRunning = false;
+                LabelTime = 0;
+                LabelDeviceIsRunning = Color.Red;
+                _ = await ioTHubManager.SendStopRequestToDevice(device);
+                Debug.WriteLine("Device stopped: " + App.DeviceData.MachineName);
+            }
         }
     }
 }

@@ -2,14 +2,14 @@
 // Copyright (c) Bound Technologies AB. All rights reserved.
 // -------------------------------------------------------------------------------------------------
 
-using Bound.Tablet;
+using Bound.NFC;
 using Bound.Tablet.Models;
+using Bound.Tablet.Settings;
 using Devicemanager.API.Interfaces;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
-using Bound.NFC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +19,6 @@ using System.Threading.Tasks;
 using IotHubConnectionStringBuilder = Microsoft.Azure.Devices.Client.IotHubConnectionStringBuilder;
 using Message = Microsoft.Azure.Devices.Client.Message;
 using TransportType = Microsoft.Azure.Devices.Client.TransportType;
-using Bound.Tablet.Settings;
-using System.Diagnostics;
-using Bound.Tablet.ViewModels;
 
 namespace Devicemanager.API.Managers
 {
@@ -113,6 +110,7 @@ namespace Devicemanager.API.Managers
 
                 methodInvocation.SetPayloadJson(json);
                 result = await serviceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);
+
             }
             catch (Exception ex)
             {
@@ -124,6 +122,8 @@ namespace Devicemanager.API.Managers
                 {
                     await deviceClient.CloseAsync();
                 }
+
+                deviceName.IsRunning = false;
             }
 
             return (HttpStatusCode)result.Status;
@@ -132,7 +132,7 @@ namespace Devicemanager.API.Managers
         public async Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName)
         {
             CloudToDeviceMethodResult result;
-                var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
+            var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
             try
             {

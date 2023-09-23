@@ -1,5 +1,4 @@
-﻿using Bound.NFC;
-using Bound.Tablet.ViewModels;
+﻿using Bound.Tablet.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
