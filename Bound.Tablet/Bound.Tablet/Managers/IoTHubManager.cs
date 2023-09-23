@@ -20,12 +20,13 @@ using IotHubConnectionStringBuilder = Microsoft.Azure.Devices.Client.IotHubConne
 using Message = Microsoft.Azure.Devices.Client.Message;
 using TransportType = Microsoft.Azure.Devices.Client.TransportType;
 using Bound.Tablet.Settings;
+using System.Diagnostics;
+using Bound.Tablet.ViewModels;
 
 namespace Devicemanager.API.Managers
 {
     public class IoTHubManager : IIoTHubManager
     {
-
         public IoTHubManager()
         {
             this.IoTHubConnectionString = Constants.ioTHubConnectionString;
@@ -33,8 +34,6 @@ namespace Devicemanager.API.Managers
         }
 
         private RegistryManager RegistryManager { get; set; }
-
-        private static ServiceClient ServiceClient { get; set; }
 
         private string IoTHubConnectionString { get; }
 
@@ -104,20 +103,27 @@ namespace Devicemanager.API.Managers
         public async Task<HttpStatusCode> SendStartRequestToDevice(IoTHubDevice deviceName)
         {
             CloudToDeviceMethodResult result;
+            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(deviceName.ConnectionString, TransportType.Mqtt);
+            var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
             try
             {
-                ServiceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
-
-                var methodInvocation = new CloudToDeviceMethod("start") { ResponseTimeout = TimeSpan.FromSeconds(30) };
+                var methodInvocation = new CloudToDeviceMethod("start");
                 string json = JsonConvert.SerializeObject(App.DeviceData);
 
                 methodInvocation.SetPayloadJson(json);
-                result = await ServiceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);
+                result = await serviceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return HttpStatusCode.NotFound;
+            }
+            finally
+            {
+                if (deviceClient != null)
+                {
+                    await deviceClient.CloseAsync();
+                }
             }
 
             return (HttpStatusCode)result.Status;
@@ -126,22 +132,27 @@ namespace Devicemanager.API.Managers
         public async Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName)
         {
             CloudToDeviceMethodResult result;
+                var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
             try
             {
-                ServiceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
-                var methodInvocation = new CloudToDeviceMethod("stop") { ResponseTimeout = TimeSpan.FromSeconds(30) };
-
+                var methodInvocation = new CloudToDeviceMethod("stop");
                 string json = JsonConvert.SerializeObject(App.DeviceData);
-
                 methodInvocation.SetPayloadJson(json);
 
-                result = await ServiceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);
+                result = await serviceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);
             }
             catch (Exception)
             {
                 return HttpStatusCode.NotFound;
+            }
+            finally
+            {
+                if (serviceClient != null)
+                {
+                    await serviceClient.CloseAsync();
+                }
             }
 
             return (HttpStatusCode)result.Status;
