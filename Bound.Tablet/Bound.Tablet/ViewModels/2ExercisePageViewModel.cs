@@ -108,6 +108,7 @@ namespace Bound.Tablet.ViewModels
             //}
             Debug.WriteLine("remove");
             time = 0;
+            timer.Start();
             App.User.DeviceData.Weight--;
             LabelWeight = App.User.DeviceData.Weight;
         }
