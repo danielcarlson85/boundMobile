@@ -31,7 +31,7 @@ namespace Bound.Tablet.ViewModels
         {
             var machineNameFromTag = tagInfo.Records.First();
 
-            App.DeviceData.MachineName = machineNameFromTag.Message;
+            App.User.DeviceData.MachineName = machineNameFromTag.Message;
             Application.Current.MainPage = new ExercisePage();
         }
 

@@ -17,14 +17,14 @@ namespace Bound.Tablet.Views
             BindingContext = viewModel = new ExercisePageViewModel();
         }
 
-        private async void ButtonStart_Clicked(object sender, System.EventArgs e)
+        private async void ButtonAddWeight_Clicked(object sender, System.EventArgs e)
         {
-            await viewModel.ButtonStart_Clicked();
+            viewModel.ButtonAddWeight_Clicked();
         }
 
-        public async void ButtonStop_Clicked(object sender, System.EventArgs e)
+        public async void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)
         {
-            await viewModel.ButtonStop_Clicked();
+            viewModel.ButtonRemoveWeight_Clicked();
         }
 
         private void ImageButtonBack_Clicked(object sender, System.EventArgs e)
@@ -33,9 +33,8 @@ namespace Bound.Tablet.Views
             Application.Current.MainPage = new MachinesPage();
         }
 
-        protected override async void OnDisappearing()
+        protected override void OnDisappearing()
         {
-            await viewModel.ButtonStop_Clicked();
             base.OnDisappearing();
         }
     }

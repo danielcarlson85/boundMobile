@@ -22,7 +22,7 @@ namespace Bound.Tablet.Views
             return true;
         }
 
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
 
         }

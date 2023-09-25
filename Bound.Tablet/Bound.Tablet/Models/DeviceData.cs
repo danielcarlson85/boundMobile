@@ -9,6 +9,8 @@ namespace Bound
         public string MachineName { get; set; }
         public string ObjectId { get; set; }
 
-        public IoTHubDevice Device { get; set; }
+        public int Weight { get; set; }
+
+        public IoTHubDevice Device { get; set; } = new IoTHubDevice();
     }
 }

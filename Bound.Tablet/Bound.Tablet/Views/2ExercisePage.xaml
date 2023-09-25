@@ -46,29 +46,29 @@
 
         <StackLayout Grid.Row="5">
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Button Text="Start" 
+                <Button Text="+" 
                     VerticalOptions   ="Center"
                     HorizontalOptions ="Center"
                     WidthRequest      ="100"
                     HeightRequest     ="100"
                     CornerRadius      ="100"  
-                    Clicked="ButtonStart_Clicked"  
+                    Clicked="ButtonAddWeight_Clicked"  
                     BackgroundColor="Black" 
                         Opacity="0.6"
                     TextColor="GreenYellow"/>
 
-                <Button Text="Stop" 
+                <Button Text="-" 
                     VerticalOptions   ="Center"
                     HorizontalOptions ="Center"
                     WidthRequest      ="100"
                     HeightRequest     ="100"
                     CornerRadius      ="100" 
-                    Clicked="ButtonStop_Clicked"
+                    Clicked="ButtonRemoveWeight_Clicked"
                     BackgroundColor="Black" 
                     TextColor="Red"
                         Opacity="0.6"/>
             </StackLayout>
-            <Label FontSize="40"  Text="{Binding LabelTime}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+            <Label FontSize="40"  Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
             <ImageButton Source="backbutton"
                      HorizontalOptions="CenterAndExpand"  
                      Clicked="ImageButtonBack_Clicked"

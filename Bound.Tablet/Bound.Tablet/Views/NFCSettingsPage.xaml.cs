@@ -43,7 +43,7 @@ namespace Bound.Tablet.Views
         void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             var machineNameFromTag = tagInfo.Records.First();
-            App.DeviceData.MachineName = machineNameFromTag.Message;
+            App.User.DeviceData.MachineName = machineNameFromTag.Message;
         }
 
         private void ButtonSetNFCTagName_Clicked(object sender, System.EventArgs e)

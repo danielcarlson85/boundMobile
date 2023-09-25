@@ -53,7 +53,7 @@ namespace Devicemanager.API.Managers
         {
             var ioTHubDeviceAsObject = new IoTHubDevice();
             this.IotHubConnectionStringBuilder = IotHubConnectionStringBuilder.Create(this.IoTHubConnectionString + ";DeviceId=" + deviceId);
-            ioTHubDeviceAsObject.Device = device;
+            ioTHubDeviceAsObject.AzureIoTHubDevice = device;
             ioTHubDeviceAsObject.DeviceName = device.Id;
             ioTHubDeviceAsObject.ConnectionString = "HostName=" + this.IotHubConnectionStringBuilder.HostName + ";DeviceId=" + deviceId + ";SharedAccessKey=" + device.Authentication.SymmetricKey.PrimaryKey;
             return ioTHubDeviceAsObject;
@@ -97,19 +97,19 @@ namespace Devicemanager.API.Managers
             Console.WriteLine("Data sent to iothubdevice");
         }
 
-        public async Task<HttpStatusCode> SendStartRequestToDevice(IoTHubDevice deviceName)
+        public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
         {
             CloudToDeviceMethodResult result;
-            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(deviceName.ConnectionString, TransportType.Mqtt);
+            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(user.DeviceData.Device.ConnectionString, TransportType.Mqtt);
             var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
             try
             {
                 var methodInvocation = new CloudToDeviceMethod("start");
-                string json = JsonConvert.SerializeObject(App.DeviceData);
+                string json = JsonConvert.SerializeObject(user.DeviceData);
 
                 methodInvocation.SetPayloadJson(json);
-                result = await serviceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);
+                result = await serviceClient.InvokeDeviceMethodAsync(user.DeviceData.MachineName, methodInvocation);
 
             }
             catch (Exception ex)
@@ -123,7 +123,7 @@ namespace Devicemanager.API.Managers
                     await deviceClient.CloseAsync();
                 }
 
-                deviceName.IsRunning = false;
+                user.DeviceData.Device.IsRunning = false;
             }
 
             return (HttpStatusCode)result.Status;
@@ -138,7 +138,7 @@ namespace Devicemanager.API.Managers
             {
 
                 var methodInvocation = new CloudToDeviceMethod("stop");
-                string json = JsonConvert.SerializeObject(App.DeviceData);
+                string json = JsonConvert.SerializeObject(App.User.DeviceData);
                 methodInvocation.SetPayloadJson(json);
 
                 result = await serviceClient.InvokeDeviceMethodAsync(deviceName.DeviceName, methodInvocation);

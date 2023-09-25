@@ -28,11 +28,11 @@ namespace Bound.Tablet.ViewModels
             set { SetProperty(ref password, value); }
         }
 
-        private int labelTime;
-        public int LabelTime
+        private int labelWeight;
+        public int LabelWeight
         {
-            get { return labelTime; }
-            set { SetProperty(ref labelTime, value); }
+            get { return labelWeight; }
+            set { SetProperty(ref labelWeight, value); }
         }
 
         private string labelMachineName;

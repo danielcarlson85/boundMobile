@@ -48,7 +48,7 @@ namespace Bound.Tablet.ViewModels
         private static void SaveCachedUser()
         {
             var userAsJSON = JsonConvert.SerializeObject(App.User);
-            var tokensAsJSON = JsonConvert.SerializeObject(App.Tokens);
+            var tokensAsJSON = JsonConvert.SerializeObject(App.User.Tokens);
 
             Xamarin.Essentials.Preferences.Set("user", userAsJSON);
             Xamarin.Essentials.Preferences.Set("tokens", tokensAsJSON);
@@ -65,7 +65,7 @@ namespace Bound.Tablet.ViewModels
                 Role = AuthenticationResult.Role
             };
 
-            App.Tokens = new Tokens()
+            App.User.Tokens = new Tokens()
             {
                 AccessToken = AuthenticationResult.AccessToken,
                 RefreshToken = AuthenticationResult.RefreshToken

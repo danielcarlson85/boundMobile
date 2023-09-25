@@ -4,7 +4,7 @@ namespace Bound.Tablet.Models
 {
     public class IoTHubDevice
     {
-        public Device Device { get; set; }
+        public Device AzureIoTHubDevice { get; set; } = new Device();
 
         public bool IsRunning { get; set; }
 

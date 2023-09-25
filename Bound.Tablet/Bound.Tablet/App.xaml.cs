@@ -18,9 +18,6 @@ namespace Bound.NFC
 
         public static User User = new User();
 
-        public static DeviceData DeviceData = new DeviceData();
-
-        public static Tokens Tokens = new Tokens();
 
         public App()
         {
@@ -47,9 +44,9 @@ namespace Bound.NFC
             if (!string.IsNullOrEmpty(savedUser) && !string.IsNullOrEmpty(savedTokens))
             {
                 User = JsonConvert.DeserializeObject<User>(savedUser);
-                Tokens = JsonConvert.DeserializeObject<Tokens>(savedTokens);
+                User.Tokens = JsonConvert.DeserializeObject<Tokens>(savedTokens);
 
-                DeviceData = new DeviceData()
+                User.DeviceData = new DeviceData()
                 {
                     ObjectId = User.ObjectId
                 };

@@ -16,9 +16,9 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             ImageButton button = (ImageButton)sender;
-            App.DeviceData.MachineName = button.Source.ToString().Substring(6);
+            App.User.DeviceData.MachineName = button.Source.ToString().Substring(6);
 
-            Debug.WriteLine("Machine selected: " + App.DeviceData.MachineName);
+            Debug.WriteLine("Machine selected: " + App.User.DeviceData.MachineName);
 
             Application.Current.MainPage = new ExercisePage();
         }
