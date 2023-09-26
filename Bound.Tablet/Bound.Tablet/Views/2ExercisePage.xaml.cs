@@ -19,11 +19,17 @@ namespace Bound.Tablet.Views
 
         private async void ButtonAddWeight_Clicked(object sender, System.EventArgs e)
         {
-            viewModel.ButtonAddWeight_Clicked();
+            Button clickedButton = (Button)sender; // Get the button that was clicked
+
+            string weightToAdd = clickedButton.Text;
+            viewModel.ButtonAddWeight_Clicked(weightToAdd);
         }
 
         public async void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)
         {
+            Button clickedButton = (Button)sender; // Get the button that was clicked
+
+            string buttonText = clickedButton.Text;
             viewModel.ButtonRemoveWeight_Clicked();
         }
 
@@ -36,6 +42,11 @@ namespace Bound.Tablet.Views
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
+        }
+
+        private void Button_Clicked(object sender, System.EventArgs e)
+        {
+
         }
     }
 }

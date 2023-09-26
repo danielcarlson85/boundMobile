@@ -19,10 +19,11 @@ namespace Devicemanager.API.Interfaces
         Task<List<IoTHubDevice>> GetAll();
 
         Task<List<Twin>> GetAllIoTDevices();
-
+        Task<string> RetrieveMessageFromIotHubEventHub();
         Task SendDataToIoTHubDevice(IoTHubDevice ioTHubDevice, string messageToSend);
 
         Task<HttpStatusCode> SendStartRequestToDevice(User user);
         Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName);
+        Task<string> StartReceivingMessagesAsync(string deviceId);
     }
 }

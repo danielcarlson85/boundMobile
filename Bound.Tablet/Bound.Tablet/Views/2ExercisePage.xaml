@@ -44,37 +44,44 @@
 
         </StackLayout>
 
-        <StackLayout Grid.Row="5">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Button Text="+" 
-                    VerticalOptions   ="Center"
-                    HorizontalOptions ="Center"
-                    WidthRequest      ="100"
-                    HeightRequest     ="100"
-                    CornerRadius      ="100"  
-                    Clicked="ButtonAddWeight_Clicked"  
-                    BackgroundColor="Black" 
-                        Opacity="0.6"
-                    TextColor="GreenYellow"/>
-
-                <Button Text="-" 
-                    VerticalOptions   ="Center"
-                    HorizontalOptions ="Center"
-                    WidthRequest      ="100"
-                    HeightRequest     ="100"
-                    CornerRadius      ="100" 
-                    Clicked="ButtonRemoveWeight_Clicked"
-                    BackgroundColor="Black" 
-                    TextColor="Red"
-                        Opacity="0.6"/>
-            </StackLayout>
-            <Label FontSize="40"  Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
-            <ImageButton Source="backbutton"
+        <Label Grid.Row="4" FontSize="40"  Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+        <ImageButton Source="backbutton"
                      HorizontalOptions="CenterAndExpand"  
                      Clicked="ImageButtonBack_Clicked"
                      WidthRequest="50"
                      BackgroundColor="Transparent"/>
 
-        </StackLayout>
+        <Grid Grid.Row="5" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
+            <!-- First Row -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <!-- Numbers 1, 2, 3 -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Text="1" Grid.Row="0" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="2" Grid.Row="0" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="3" Grid.Row="0" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+
+            <!-- Numbers 4, 5, 6 -->
+            <Button Text="4" Grid.Row="1" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="5" Grid.Row="1" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="6" Grid.Row="1" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+
+            <!-- Numbers 7, 8, 9 -->
+            <Button Text="7" Grid.Row="2" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="8" Grid.Row="2" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="9" Grid.Row="2" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+
+            <Button Text="CE" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+        </Grid>
     </Grid>
 </ContentPage>

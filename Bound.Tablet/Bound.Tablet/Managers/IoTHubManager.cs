@@ -9,9 +9,11 @@ using Devicemanager.API.Interfaces;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
+using Microsoft.Azure.EventHubs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -157,6 +159,126 @@ namespace Devicemanager.API.Managers
 
             return (HttpStatusCode)result.Status;
         }
+
+
+        private bool isReceivingMessages = false;
+
+        public async Task<string> StartReceivingMessagesAsync(string deviceId)
+        {
+            isReceivingMessages = true;
+            var lastReceivedMessage = string.Empty;
+
+            var deviceClient = DeviceClient.CreateFromConnectionString(IoTHubConnectionString, deviceId);
+
+            await Task.Run(async () =>
+            {
+                while (isReceivingMessages)
+                {
+                    try
+                    {
+                        var receivedMessage = await deviceClient.ReceiveAsync();
+
+                        if (receivedMessage != null)
+                        {
+                            //Device.BeginInvokeOnMainThread(() =>
+                            //{
+                            //    // Update UI with received message
+                            //    messageLabel.Text = $"Received message: {Encoding.ASCII.GetString(receivedMessage.GetBytes())}";
+                            //});
+
+                            lastReceivedMessage = Encoding.ASCII.GetString(receivedMessage.GetBytes());
+
+
+                            await deviceClient.CompleteAsync(receivedMessage);
+
+                        }
+
+                        await Task.Delay(1000); // Adjust the delay as needed
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle receiving error
+                        //Device.BeginInvokeOnMainThread(() =>
+                        //{
+                        //    DisplayAlert("Error", $"Failed to receive message: {ex.Message}", "OK");
+                        //});
+
+                    }
+                    finally
+                    {
+                        isReceivingMessages = false;
+
+                    }
+                }
+            });
+
+            return lastReceivedMessage;
+        }
+
+        public async Task<string> RetrieveMessageFromIotHubEventHub()
+        {
+            isReceivingMessages = true;
+
+            var eventHubBuilder = new EventHubsConnectionStringBuilder("Endpoint=sb://ihsuproddbres034dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=Ytv0bSvktmjBB0pL2Do1SPZLbkCl2QbpYAIoTMJr7v0=;EntityPath=iothub-ehub-boundiothu-25246278-264cec2200");
+
+            var eventHubEndpoint = eventHubBuilder.Endpoint;
+            string eventHubName = eventHubBuilder.EntityPath;
+            string sasKeyName = eventHubBuilder.SasKeyName;
+            string sasKey = eventHubBuilder.SasKey;
+
+            var connectionString = new EventHubsConnectionStringBuilder(eventHubEndpoint, eventHubName, sasKeyName, sasKey);
+
+            var eventHubClient = EventHubClient.CreateFromConnectionString(connectionString.ToString());
+
+            var receiver = eventHubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.UtcNow.AddMinutes(-5)));
+
+
+            await Task.Run(async () =>
+            {
+                while (isReceivingMessages)
+                {
+                    var eventData = await receiver.ReceiveAsync(1);
+
+                    if (eventData == null) continue;
+                    var d = eventData.ToList()[0];
+
+                    var s = d.Body.ToArray();
+
+                    var w = Encoding.UTF8.GetString(s);
+
+                    Debug.WriteLine(s);
+                }
+
+            });
+
+            return null;
+        }
+
+
+        private void StopReceivingMessages()
+        {
+            isReceivingMessages = false;
+        }
+
+
+        public async Task ReceiveMessagesFromDeviceAsync(string iotHubConnectionString, string deviceId)
+        {
+            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubConnectionString, deviceId);
+
+            while (true)
+            {
+                var receivedMessage = await deviceClient.ReceiveAsync();
+
+                if (receivedMessage != null)
+                {
+                    Console.WriteLine($"Received message from {deviceId}: {Encoding.ASCII.GetString(receivedMessage.GetBytes())}");
+                    await deviceClient.CompleteAsync(receivedMessage);
+                }
+
+                await Task.Delay(1000); // Adjust the delay as needed
+            }
+        }
+
 
         public Task<List<IoTHubDevice>> GetAll()
         {
