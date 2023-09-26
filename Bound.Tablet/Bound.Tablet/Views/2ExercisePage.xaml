@@ -34,13 +34,13 @@
 
         <StackLayout Orientation="Horizontal" Grid.Row="3" VerticalOptions="CenterAndExpand">
             <Label FontSize="16" Text="Is running: " TextColor="GreenYellow"/>
-            <Button
+            <!--<Button
                     WidthRequest      ="20"
                     HeightRequest     ="20"
                     CornerRadius      ="40"
                     VerticalOptions   ="Center"
                     HorizontalOptions ="Center"
-                    BackgroundColor   ="{Binding LabelDeviceIsRunning}"/>
+                    BackgroundColor   ="{Binding LabelDeviceIsRunning}"/>-->
 
         </StackLayout>
 

@@ -13,7 +13,6 @@ namespace Bound.Tablet.ViewModels
     public class ExercisePageViewModel : BaseViewModel
     {
         readonly IoTHubManager ioTHubManager;
-        IoTHubDevice device;
         System.Timers.Timer timer;
 
         public ExercisePageViewModel()
@@ -34,7 +33,7 @@ namespace Bound.Tablet.ViewModels
             {
                 while (true)
                 {
-                    device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+                    var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
                     if (device == null)
                     {
                         LabelDeviceIsRunning = Color.Red;
@@ -112,8 +111,6 @@ namespace Bound.Tablet.ViewModels
 
             LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
             Debug.WriteLine("Add " + LabelWeight.ToString());
-
-            await ioTHubManager.StartReciever();
         }
 
         public void ButtonRemoveWeight_Clicked()

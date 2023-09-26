@@ -39,9 +39,6 @@ namespace Bound.Tablet.ViewModels
             var machineNameFromTag = tagInfo.Records.First();
 
             App.User.DeviceData.MachineName = machineNameFromTag.Message;
-            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-
-            App.User.DeviceData.Device = device;
             Application.Current.MainPage = new ExercisePage();
         }
 

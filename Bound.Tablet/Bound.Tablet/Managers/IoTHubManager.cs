@@ -160,9 +160,13 @@ namespace Devicemanager.API.Managers
             }
         }
 
-        public async Task StartReciever()
+        public async Task StartReciever(IoTHubDevice ioTHubDevice)
         {
-            await Task.Run(() => RegisterMethodCallback(deviceClient));
+            using (DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(ioTHubDevice.ConnectionString, TransportType.Mqtt))
+            {
+                await Task.Run(() => RegisterMethodCallback(deviceClient));
+            }
+
 
         }
 
