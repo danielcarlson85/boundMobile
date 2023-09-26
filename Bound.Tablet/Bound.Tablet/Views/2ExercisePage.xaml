@@ -44,12 +44,12 @@
 
         </StackLayout>
 
-        <Label Grid.Row="4" FontSize="40"  Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
-        <ImageButton Source="backbutton"
+        <Label Grid.Row="4" FontSize="16" Margin="0,20,0,0" Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+        <!--<ImageButton Source="backbutton"
                      HorizontalOptions="CenterAndExpand"  
                      Clicked="ImageButtonBack_Clicked"
                      WidthRequest="50"
-                     BackgroundColor="Transparent"/>
+                     BackgroundColor="Transparent"/>-->
 
         <Grid Grid.Row="5" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
             <!-- First Row -->

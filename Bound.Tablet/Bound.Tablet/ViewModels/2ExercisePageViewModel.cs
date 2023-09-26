@@ -35,6 +35,12 @@ namespace Bound.Tablet.ViewModels
                 while (true)
                 {
                     device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+                    if (device == null)
+                    {
+                        LabelDeviceIsRunning = Color.Red;
+                        return;
+                    }
+
                     if (device.AzureIoTHubDevice.ConnectionState == DeviceConnectionState.Connected)
                     {
                         LabelDeviceStatus = Color.GreenYellow;
@@ -49,51 +55,65 @@ namespace Bound.Tablet.ViewModels
             });
         }
 
-        int time = 0;
+        int time = 5;
 
         public void InitCounterTimer()
         {
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += async (object sender, System.Timers.ElapsedEventArgs e) =>
             {
-                time++;
+                time--;
                 Debug.WriteLine(time);
-                if (time >= 5)
+
+                LabelWeight = "Starting device " + time;
+
+                if (time <= 0)
                 {
 
                     Debug.WriteLine("Send");
                     timer.Stop();
-                    App.User.DeviceData.Device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+                    var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+
+                    if (device == null)
+                    {
+                        LabelWeight = "This machine is not yet registred, please use another one.";
+                        return;
+                    }
+
+                    LabelWeight = "Device started.";
+
+                    App.User.DeviceData.Device = device;
 
                     _ = await ioTHubManager.SendStartRequestToDevice(App.User);
-
                 }
             };
         }
         string weightAsString = string.Empty;
 
-        public void ButtonAddWeight_Clicked(string weightToAdd)
+        public async void ButtonAddWeight_ClickedAsync(string weightToAdd)
         {
+            CommonMethods.Vibrate();
+
             if (weightToAdd != "CE")
             {
                 weightAsString += weightToAdd;
                 var weight = long.Parse(weightAsString);
                 App.User.DeviceData.Weight = weight;
+
+                time = 5;
+                timer.Start();
             }
             else
             {
                 App.User.DeviceData.Weight = 0;
                 weightAsString = string.Empty;
+                timer.Stop();
             }
 
-            LabelWeight = App.User.DeviceData.Weight;
-
+            LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
             Debug.WriteLine("Add " + LabelWeight.ToString());
 
-            time = 0;
-            timer.Start();
-
-            CommonMethods.Vibrate();
+            await ioTHubManager.StartReciever();
         }
 
         public void ButtonRemoveWeight_Clicked()
@@ -104,7 +124,7 @@ namespace Bound.Tablet.ViewModels
             time = 0;
             timer.Start();
             App.User.DeviceData.Weight--;
-            LabelWeight = App.User.DeviceData.Weight;
+            LabelWeight = App.User.DeviceData.Weight.ToString();
         }
     }
 }

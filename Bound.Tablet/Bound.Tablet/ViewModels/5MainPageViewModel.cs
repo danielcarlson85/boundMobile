@@ -1,5 +1,6 @@
 ﻿using Bound.NFC;
 using Bound.Tablet.Views;
+using Devicemanager.API.Managers;
 using Plugin.NFC;
 using System.Linq;
 using Xamarin.Forms;
@@ -9,8 +10,14 @@ namespace Bound.Tablet.ViewModels
     public class MainPageViewModel : BaseViewModel
     {
         bool _eventsAlreadySubscribed = false;
+        private IoTHubManager ioTHubManager;
         public const string MIME_TYPE = "application/com.companyname.Bound.NFC";
 
+        public MainPageViewModel()
+        {
+            ioTHubManager = new IoTHubManager();
+
+        }
         public void StartListeningForNFC()
         {
             if (_eventsAlreadySubscribed)
@@ -27,11 +34,14 @@ namespace Bound.Tablet.ViewModels
             CrossNFC.Current.StopListening();
         }
 
-        void Current_OnMessageReceived(ITagInfo tagInfo)
+        async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             var machineNameFromTag = tagInfo.Records.First();
 
             App.User.DeviceData.MachineName = machineNameFromTag.Message;
+            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+
+            App.User.DeviceData.Device = device;
             Application.Current.MainPage = new ExercisePage();
         }
 

@@ -30,9 +30,12 @@ namespace Devicemanager.API.Managers
         {
             this.IoTHubConnectionString = Constants.ioTHubConnectionString;
             this.RegistryManager = RegistryManager.CreateFromConnectionString(IoTHubConnectionString);
+           // deviceClient = DeviceClient.CreateFromConnectionString(App.User.DeviceData.Device.ConnectionString, TransportType.Mqtt);
         }
 
         private RegistryManager RegistryManager { get; set; }
+
+        private readonly DeviceClient deviceClient;
 
         private string IoTHubConnectionString { get; }
 
@@ -44,7 +47,7 @@ namespace Devicemanager.API.Managers
 
             if (device == null)
             {
-                throw new ArgumentException("IoThub device with that name does not exist");
+                return null; // throw new ArgumentException("IoThub device with that name does not exist");
             }
 
             var ioTHubDevice = this.CreateIoTHubDeviceObject(deviceId, device);
@@ -131,6 +134,78 @@ namespace Devicemanager.API.Managers
             return (HttpStatusCode)result.Status;
         }
 
+
+
+
+
+
+
+
+
+        private async Task ReceiveMessageAsync(Message message, object userContext)
+        {
+            try
+            {
+                string messageData = Encoding.ASCII.GetString(message.GetBytes());
+                Console.WriteLine($"Received message: {messageData}");
+
+                // Add your custom logic to handle the message here
+
+                // After processing, you should complete the message to remove it from the queue
+                await deviceClient.CompleteAsync(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling message: {ex.Message}");
+            }
+        }
+
+        public async Task StartReciever()
+        {
+            await Task.Run(() => RegisterMethodCallback(deviceClient));
+
+        }
+
+        private static async Task RegisterMethodCallback(DeviceClient deviceClient)
+        {
+            await deviceClient.SetMethodHandlerAsync("MethodName", MethodCallback, null);
+        }
+
+        private static Task<MethodResponse> MethodCallback(MethodRequest methodRequest, object userContext)
+        {
+            try
+            {
+                Debug.WriteLine($"Received method request: {methodRequest.Name}");
+
+                // You can access method request parameters like this:
+                string payload = Encoding.UTF8.GetString(methodRequest.Data);
+                Debug.WriteLine($"Request payload: {payload}");
+
+                // Implement your custom method logic here
+
+                // Respond to the method request (optional)
+                var responsePayload = Encoding.UTF8.GetBytes("{\"response\":\"success\"}");
+                return Task.FromResult(new MethodResponse(responsePayload, 200));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling method request: {ex.Message}");
+                // Respond with an error if needed
+                var errorPayload = Encoding.UTF8.GetBytes("{\"error\":\"" + ex.Message + "\"}");
+                return Task.FromResult(new MethodResponse(errorPayload, 500));
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
         public async Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName)
         {
             CloudToDeviceMethodResult result;
@@ -159,6 +234,17 @@ namespace Devicemanager.API.Managers
 
             return (HttpStatusCode)result.Status;
         }
+
+
+
+
+
+
+
+
+
+
+
 
 
         private bool isReceivingMessages = false;

@@ -25,5 +25,6 @@ namespace Devicemanager.API.Interfaces
         Task<HttpStatusCode> SendStartRequestToDevice(User user);
         Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName);
         Task<string> StartReceivingMessagesAsync(string deviceId);
+        Task StartReciever();
     }
 }

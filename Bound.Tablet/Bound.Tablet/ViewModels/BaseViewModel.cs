@@ -28,8 +28,8 @@ namespace Bound.Tablet.ViewModels
             set { SetProperty(ref password, value); }
         }
 
-        private long labelWeight;
-        public long LabelWeight
+        private string labelWeight;
+        public string LabelWeight
         {
             get { return labelWeight; }
             set { SetProperty(ref labelWeight, value); }
