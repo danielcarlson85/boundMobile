@@ -4,6 +4,8 @@
     {
         public DeviceData DeviceData { get; set; } = new DeviceData();
         public Tokens Tokens { get; set; } = new Tokens();
+        public IoTHubDevice Device { get; set; } = new IoTHubDevice();
+
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

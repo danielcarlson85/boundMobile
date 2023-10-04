@@ -50,6 +50,8 @@ namespace Devicemanager.API.Managers
                 return null; // throw new ArgumentException("IoThub device with that name does not exist");
             }
 
+            await RegistryManager.CloseAsync();
+
             var ioTHubDevice = this.CreateIoTHubDeviceObject(deviceId, device);
             return ioTHubDevice;
         }
@@ -105,7 +107,7 @@ namespace Devicemanager.API.Managers
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
         {
             CloudToDeviceMethodResult result;
-            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(user.DeviceData.Device.ConnectionString, TransportType.Mqtt);
+            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(user.Device.ConnectionString, TransportType.Mqtt);
             var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
             try
@@ -128,7 +130,7 @@ namespace Devicemanager.API.Managers
                     await deviceClient.CloseAsync();
                 }
 
-                user.DeviceData.Device.IsRunning = false;
+                user.Device.IsRunning = false;
             }
 
             return (HttpStatusCode)result.Status;

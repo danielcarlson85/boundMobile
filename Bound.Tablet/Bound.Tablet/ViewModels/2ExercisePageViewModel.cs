@@ -5,6 +5,7 @@ using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -23,15 +24,20 @@ namespace Bound.Tablet.ViewModels
             LabelDeviceStatus = Color.Red;
             LabelDeviceIsRunning = Color.Red;
 
-            InitStatusTask();
-            InitCounterTimer();
+            InitStatusTask(true);
+            //InitCounterTimer(false);
         }
 
-        public void InitStatusTask()
+        public void InitStatusTask(bool isRunning)
         {
+            if (!isRunning)
+            {
+                return;
+            }
+
             Task.Run(async () =>
             {
-                while (true)
+                while (isRunning)
                 {
                     var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
                     if (device == null)
@@ -56,40 +62,56 @@ namespace Bound.Tablet.ViewModels
 
         int time = 5;
 
-        public void InitCounterTimer()
+        //public void InitCounterTimer(bool isRunning)
+        //{
+        //    if (isRunning)
+        //    {
+        //        return;
+        //    }
+
+        //    Task.Run(async () =>
+        //    {
+        //        while (isRunning)
+        //        {
+        //            time--;
+        //            Debug.WriteLine(time);
+
+        //            LabelWeight = "Starting device " + time;
+
+        //            if (time <= 0)
+        //            {
+
+
+    //            }
+    //            await Task.Delay(1000);
+    //        }
+    //    });
+    //}
+    private CancellationTokenSource timerCancellationTokenSource;
+
+
+        private async Task SendDataToDeviceAsync()
         {
-            timer = new System.Timers.Timer(1000);
-            timer.Elapsed += async (object sender, System.Timers.ElapsedEventArgs e) =>
+
+            Debug.WriteLine("Send");
+            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+
+            if (device == null)
             {
-                time--;
-                Debug.WriteLine(time);
+                LabelWeight = "This machine is not yet registred, please use another one.";
+                return;
+            }
 
-                LabelWeight = "Starting device " + time;
+            LabelWeight = "Device started.";
 
-                if (time <= 0)
-                {
+            App.User.Device = device;
 
-                    Debug.WriteLine("Send");
-                    timer.Stop();
-                    var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-
-                    if (device == null)
-                    {
-                        LabelWeight = "This machine is not yet registred, please use another one.";
-                        return;
-                    }
-
-                    LabelWeight = "Device started.";
-
-                    App.User.DeviceData.Device = device;
-
-                    _ = await ioTHubManager.SendStartRequestToDevice(App.User);
-                }
-            };
+            _ = await ioTHubManager.SendStartRequestToDevice(App.User);
         }
+
         string weightAsString = string.Empty;
 
-        public async void ButtonAddWeight_ClickedAsync(string weightToAdd)
+        public async Task ButtonAddWeight_ClickedAsync(string weightToAdd)
         {
             CommonMethods.Vibrate();
 
@@ -99,18 +121,25 @@ namespace Bound.Tablet.ViewModels
                 var weight = long.Parse(weightAsString);
                 App.User.DeviceData.Weight = weight;
 
-                time = 5;
-                timer.Start();
+                LabelWeight = $"{App.User.DeviceData.Weight} kg";
+                Debug.WriteLine("Add " + LabelWeight.ToString());
+
+                timerCancellationTokenSource?.Cancel(); // Cancel the previous timer (if any)
+
+                // Start a new timer
+                timerCancellationTokenSource = new CancellationTokenSource();
+                await Task.Delay(TimeSpan.FromSeconds(5), timerCancellationTokenSource.Token);
+
+                if (!timerCancellationTokenSource.Token.IsCancellationRequested)
+                {
+                    await SendDataToDeviceAsync();
+                }
             }
             else
             {
                 App.User.DeviceData.Weight = 0;
                 weightAsString = string.Empty;
-                timer.Stop();
             }
-
-            LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
-            Debug.WriteLine("Add " + LabelWeight.ToString());
         }
 
         public void ButtonRemoveWeight_Clicked()
