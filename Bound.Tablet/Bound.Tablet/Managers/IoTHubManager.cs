@@ -9,7 +9,6 @@ using Devicemanager.API.Interfaces;
 using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
-using Microsoft.Azure.EventHubs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using IotHubConnectionStringBuilder = Microsoft.Azure.Devices.Client.IotHubConnectionStringBuilder;
-using Message = Microsoft.Azure.Devices.Client.Message;
 using TransportType = Microsoft.Azure.Devices.Client.TransportType;
 
 namespace Devicemanager.API.Managers
@@ -28,14 +26,11 @@ namespace Devicemanager.API.Managers
     {
         public IoTHubManager()
         {
-            this.IoTHubConnectionString = Constants.ioTHubConnectionString;
-            this.RegistryManager = RegistryManager.CreateFromConnectionString(IoTHubConnectionString);
-           // deviceClient = DeviceClient.CreateFromConnectionString(App.User.DeviceData.Device.ConnectionString, TransportType.Mqtt);
+            IoTHubConnectionString = Constants.ioTHubConnectionString;
+            RegistryManager = RegistryManager.CreateFromConnectionString(IoTHubConnectionString);
         }
 
         private RegistryManager RegistryManager { get; set; }
-
-        private readonly DeviceClient deviceClient;
 
         private string IoTHubConnectionString { get; }
 
@@ -92,16 +87,21 @@ namespace Devicemanager.API.Managers
             return ioTHubDevice;
         }
 
-        public async Task SendDataToIoTHubDevice(IoTHubDevice ioTHubDevice, string messageToSend)
-        {
-            using (DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(ioTHubDevice.ConnectionString, TransportType.Mqtt))
-            {
-                var message = new Message(Encoding.ASCII.GetBytes(messageToSend));
-                message.Properties.Add("Device", ioTHubDevice.DeviceName);
-                await deviceClient.SendEventAsync(message);
-            }
 
-            Console.WriteLine("Data sent to iothubdevice");
+        public async Task SendTextToIoTHubDevice(string messageToSend)
+        {
+            if (!App.User.HasLoggedInOnDevice)
+            {
+                var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
+
+                var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes(messageToSend));
+                await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+                App.User.HasLoggedInOnDevice = true;
+            }
+            else
+            {
+                Debug.WriteLine("User already logged in on device");
+            }
         }
 
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
@@ -136,82 +136,6 @@ namespace Devicemanager.API.Managers
             return (HttpStatusCode)result.Status;
         }
 
-
-
-
-
-
-
-
-
-        private async Task ReceiveMessageAsync(Message message, object userContext)
-        {
-            try
-            {
-                string messageData = Encoding.ASCII.GetString(message.GetBytes());
-                Console.WriteLine($"Received message: {messageData}");
-
-                // Add your custom logic to handle the message here
-
-                // After processing, you should complete the message to remove it from the queue
-                await deviceClient.CompleteAsync(message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error handling message: {ex.Message}");
-            }
-        }
-
-        public async Task StartReciever(IoTHubDevice ioTHubDevice)
-        {
-            using (DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(ioTHubDevice.ConnectionString, TransportType.Mqtt))
-            {
-                await Task.Run(() => RegisterMethodCallback(deviceClient));
-            }
-
-
-        }
-
-        private static async Task RegisterMethodCallback(DeviceClient deviceClient)
-        {
-            await deviceClient.SetMethodHandlerAsync("MethodName", MethodCallback, null);
-        }
-
-        private static Task<MethodResponse> MethodCallback(MethodRequest methodRequest, object userContext)
-        {
-            try
-            {
-                Debug.WriteLine($"Received method request: {methodRequest.Name}");
-
-                // You can access method request parameters like this:
-                string payload = Encoding.UTF8.GetString(methodRequest.Data);
-                Debug.WriteLine($"Request payload: {payload}");
-
-                // Implement your custom method logic here
-
-                // Respond to the method request (optional)
-                var responsePayload = Encoding.UTF8.GetBytes("{\"response\":\"success\"}");
-                return Task.FromResult(new MethodResponse(responsePayload, 200));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error handling method request: {ex.Message}");
-                // Respond with an error if needed
-                var errorPayload = Encoding.UTF8.GetBytes("{\"error\":\"" + ex.Message + "\"}");
-                return Task.FromResult(new MethodResponse(errorPayload, 500));
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
         public async Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName)
         {
             CloudToDeviceMethodResult result;
@@ -241,30 +165,15 @@ namespace Devicemanager.API.Managers
             return (HttpStatusCode)result.Status;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        private bool isReceivingMessages = false;
-
         public async Task<string> StartReceivingMessagesAsync(string deviceId)
         {
-            isReceivingMessages = true;
             var lastReceivedMessage = string.Empty;
 
             var deviceClient = DeviceClient.CreateFromConnectionString(IoTHubConnectionString, deviceId);
 
             await Task.Run(async () =>
             {
-                while (isReceivingMessages)
+                while (true)
                 {
                     try
                     {
@@ -280,6 +189,7 @@ namespace Devicemanager.API.Managers
 
                             lastReceivedMessage = Encoding.ASCII.GetString(receivedMessage.GetBytes());
 
+                            Debug.WriteLine(lastReceivedMessage);
 
                             await deviceClient.CompleteAsync(receivedMessage);
 
@@ -298,7 +208,7 @@ namespace Devicemanager.API.Managers
                     }
                     finally
                     {
-                        isReceivingMessages = false;
+                        //isReceivingMessages = false;
 
                     }
                 }
@@ -307,72 +217,15 @@ namespace Devicemanager.API.Managers
             return lastReceivedMessage;
         }
 
-        public async Task<string> RetrieveMessageFromIotHubEventHub()
-        {
-            isReceivingMessages = true;
 
-            var eventHubBuilder = new EventHubsConnectionStringBuilder("Endpoint=sb://ihsuproddbres034dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=Ytv0bSvktmjBB0pL2Do1SPZLbkCl2QbpYAIoTMJr7v0=;EntityPath=iothub-ehub-boundiothu-25246278-264cec2200");
-
-            var eventHubEndpoint = eventHubBuilder.Endpoint;
-            string eventHubName = eventHubBuilder.EntityPath;
-            string sasKeyName = eventHubBuilder.SasKeyName;
-            string sasKey = eventHubBuilder.SasKey;
-
-            var connectionString = new EventHubsConnectionStringBuilder(eventHubEndpoint, eventHubName, sasKeyName, sasKey);
-
-            var eventHubClient = EventHubClient.CreateFromConnectionString(connectionString.ToString());
-
-            var receiver = eventHubClient.CreateReceiver("$Default", "0", EventPosition.FromEnqueuedTime(DateTime.UtcNow.AddMinutes(-5)));
-
-
-            await Task.Run(async () =>
-            {
-                while (isReceivingMessages)
-                {
-                    var eventData = await receiver.ReceiveAsync(1);
-
-                    if (eventData == null) continue;
-                    var d = eventData.ToList()[0];
-
-                    var s = d.Body.ToArray();
-
-                    var w = Encoding.UTF8.GetString(s);
-
-                    Debug.WriteLine(s);
-                }
-
-            });
-
-            return null;
-        }
-
-
-        private void StopReceivingMessages()
-        {
-            isReceivingMessages = false;
-        }
-
-
-        public async Task ReceiveMessagesFromDeviceAsync(string iotHubConnectionString, string deviceId)
-        {
-            var deviceClient = DeviceClient.CreateFromConnectionString(iotHubConnectionString, deviceId);
-
-            while (true)
-            {
-                var receivedMessage = await deviceClient.ReceiveAsync();
-
-                if (receivedMessage != null)
-                {
-                    Console.WriteLine($"Received message from {deviceId}: {Encoding.ASCII.GetString(receivedMessage.GetBytes())}");
-                    await deviceClient.CompleteAsync(receivedMessage);
-                }
-
-                await Task.Delay(1000); // Adjust the delay as needed
-            }
-        }
 
 
         public Task<List<IoTHubDevice>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SendDataToIoTHubDevice(IoTHubDevice ioTHubDevice, string messageToSend)
         {
             throw new NotImplementedException();
         }

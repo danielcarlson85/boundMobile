@@ -11,5 +11,7 @@
         public string LastName { get; set; }
         public string ObjectId { get; set; }
         public string Role { get; set; }
+
+        public bool HasLoggedInOnDevice { get; set; } = false;
     }
 }

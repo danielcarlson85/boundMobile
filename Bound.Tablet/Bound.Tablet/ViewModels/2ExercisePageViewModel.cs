@@ -14,7 +14,8 @@ namespace Bound.Tablet.ViewModels
     public class ExercisePageViewModel : BaseViewModel
     {
         readonly IoTHubManager ioTHubManager;
-        System.Timers.Timer timer;
+        System.Timers.Timer timer = new System.Timers.Timer(1000);
+        int time = 5;
 
         public ExercisePageViewModel()
         {
@@ -24,8 +25,16 @@ namespace Bound.Tablet.ViewModels
             LabelDeviceStatus = Color.Red;
             LabelDeviceIsRunning = Color.Red;
 
+            timer.Elapsed += Timer_Elapsed;
+
             InitStatusTask(true);
             //InitCounterTimer(false);
+        }
+
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            LabelWeight = time.ToString();
+            time--;
         }
 
         public void InitStatusTask(bool isRunning)
@@ -56,38 +65,14 @@ namespace Bound.Tablet.ViewModels
                         LabelDeviceIsRunning = Color.Red;
                     }
                     await Task.Delay(1000);
+
+                    await ioTHubManager.StartReceivingMessagesAsync(device.DeviceName);
                 }
             });
         }
 
-        int time = 5;
 
-        //public void InitCounterTimer(bool isRunning)
-        //{
-        //    if (isRunning)
-        //    {
-        //        return;
-        //    }
-
-        //    Task.Run(async () =>
-        //    {
-        //        while (isRunning)
-        //        {
-        //            time--;
-        //            Debug.WriteLine(time);
-
-        //            LabelWeight = "Starting device " + time;
-
-        //            if (time <= 0)
-        //            {
-
-
-    //            }
-    //            await Task.Delay(1000);
-    //        }
-    //    });
-    //}
-    private CancellationTokenSource timerCancellationTokenSource;
+        private CancellationTokenSource timerCancellationTokenSource;
 
 
         private async Task SendDataToDeviceAsync()
@@ -114,7 +99,8 @@ namespace Bound.Tablet.ViewModels
         public async Task ButtonAddWeight_ClickedAsync(string weightToAdd)
         {
             CommonMethods.Vibrate();
-
+            timer.Start();
+            time = 5;
             if (weightToAdd != "CE")
             {
                 weightAsString += weightToAdd;
@@ -124,14 +110,13 @@ namespace Bound.Tablet.ViewModels
                 LabelWeight = $"{App.User.DeviceData.Weight} kg";
                 Debug.WriteLine("Add " + LabelWeight.ToString());
 
-                timerCancellationTokenSource?.Cancel(); // Cancel the previous timer (if any)
-
-                // Start a new timer
+                timerCancellationTokenSource?.Cancel();
                 timerCancellationTokenSource = new CancellationTokenSource();
                 await Task.Delay(TimeSpan.FromSeconds(5), timerCancellationTokenSource.Token);
 
                 if (!timerCancellationTokenSource.Token.IsCancellationRequested)
                 {
+                    timer.Stop();
                     await SendDataToDeviceAsync();
                 }
             }
