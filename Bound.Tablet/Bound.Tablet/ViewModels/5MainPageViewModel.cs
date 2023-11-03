@@ -1,4 +1,6 @@
-﻿using Bound.NFC;
+﻿using Android.Content;
+using Bound.NFC;
+using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Plugin.NFC;
@@ -39,7 +41,16 @@ namespace Bound.Tablet.ViewModels
             var machineNameFromTag = tagInfo.Records.First();
 
             App.User.DeviceData.MachineName = machineNameFromTag.Message;
-            await ioTHubManager.SendTextToIoTHubDevice("online");
+            await ioTHubManager.SendStartRequestToDevice(App.User);
+
+
+
+
+            _ = await new JWTHttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&status=online&reps=" + App.User.DeviceData.Weight);
+
+            //await ioTHubManager.StartReceivingMessagesAsync();
+
+
             Application.Current.MainPage = new ExercisePage();
         }
 

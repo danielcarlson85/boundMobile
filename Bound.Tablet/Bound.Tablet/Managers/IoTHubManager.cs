@@ -88,35 +88,46 @@ namespace Devicemanager.API.Managers
         }
 
 
-        public async Task SendTextToIoTHubDevice(string messageToSend)
+        public async Task SendTextToIoTHubDevice(object messageToSend)
         {
-            if (!App.User.HasLoggedInOnDevice)
-            {
-                var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
+            //    if (!App.User.HasLoggedInOnDevice)
+            //    {
 
-                var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes(messageToSend));
-                await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
-                App.User.HasLoggedInOnDevice = true;
-            }
-            else
-            {
-                Debug.WriteLine("User already logged in on device");
-            }
+            string user = JsonConvert.SerializeObject(messageToSend);
+
+
+            var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
+
+            var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes(user));
+            await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+            //App.User.HasLoggedInOnDevice = true;
+            //}
+            //else
+            //{
+            //    Debug.WriteLine("User already logged in on device");
+            //}
         }
 
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
         {
             CloudToDeviceMethodResult result;
+            
+            App.User.Device = await Get(App.User.DeviceData.MachineName);
             DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(user.Device.ConnectionString, TransportType.Mqtt);
             var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
 
             try
             {
                 var methodInvocation = new CloudToDeviceMethod("start");
-                string json = JsonConvert.SerializeObject(user.DeviceData);
+                string json = JsonConvert.SerializeObject(user);
 
                 methodInvocation.SetPayloadJson(json);
                 result = await serviceClient.InvokeDeviceMethodAsync(user.DeviceData.MachineName, methodInvocation);
+
+                if (result.Status == 200)
+                {
+                    Debug.WriteLine("Response from device");
+                }
 
             }
             catch (Exception ex)
@@ -165,54 +176,37 @@ namespace Devicemanager.API.Managers
             return (HttpStatusCode)result.Status;
         }
 
-        public async Task<string> StartReceivingMessagesAsync(string deviceId)
+        public string StartReceivingMessages()
         {
             var lastReceivedMessage = string.Empty;
 
-            var deviceClient = DeviceClient.CreateFromConnectionString(IoTHubConnectionString, deviceId);
+            var deviceClient = DeviceClient.CreateFromConnectionString(Constants.ioTHubConnectionString, "Mobile");
 
-            await Task.Run(async () =>
-            {
-                while (true)
-                {
-                    try
-                    {
-                        var receivedMessage = await deviceClient.ReceiveAsync();
+            //await Task.Run(async () =>
+            //{
+            //    //// Initialize the DeviceClient with the connection string.
+            //    //string connectionString = "YourDeviceAConnectionString";
+            //    //deviceClient = DeviceClient.CreateFromConnectionString(connectionString, TransportType.Mqtt);
 
-                        if (receivedMessage != null)
-                        {
-                            //Device.BeginInvokeOnMainThread(() =>
-                            //{
-                            //    // Update UI with received message
-                            //    messageLabel.Text = $"Received message: {Encoding.ASCII.GetString(receivedMessage.GetBytes())}";
-                            //});
+            //    //Debug.WriteLine
 
-                            lastReceivedMessage = Encoding.ASCII.GetString(receivedMessage.GetBytes());
+            //    //var receivedMessageLabel = new Xamarin.Forms.Label();
 
-                            Debug.WriteLine(lastReceivedMessage);
+            //    //sendMessageButton.Clicked += async (sender, args) =>
+            //    //{
+            //    //    string data = "Data from Device A to Device B";
+            //    //    var message = new Microsoft.Azure.Devices.Client.Message(Encoding.UTF8.GetBytes(data));
+            //    //    message.Properties.Add("targetDevice", "DeviceB");
+            //    //    await deviceClient.SendEventAsync(message);
+            //    //    receivedMessageLabel.Text = "Message sent to Device B: " + data;
+            //    //};
+            //}
+            // Set up message reception.
 
-                            await deviceClient.CompleteAsync(receivedMessage);
 
-                        }
 
-                        await Task.Delay(1000); // Adjust the delay as needed
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle receiving error
-                        //Device.BeginInvokeOnMainThread(() =>
-                        //{
-                        //    DisplayAlert("Error", $"Failed to receive message: {ex.Message}", "OK");
-                        //});
 
-                    }
-                    finally
-                    {
-                        //isReceivingMessages = false;
 
-                    }
-                }
-            });
 
             return lastReceivedMessage;
         }
@@ -226,6 +220,11 @@ namespace Devicemanager.API.Managers
         }
 
         public Task SendDataToIoTHubDevice(IoTHubDevice ioTHubDevice, string messageToSend)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<string> IIoTHubManager.StartReceivingMessages()
         {
             throw new NotImplementedException();
         }

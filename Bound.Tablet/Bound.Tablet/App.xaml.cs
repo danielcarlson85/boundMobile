@@ -1,14 +1,8 @@
-﻿using Autofac;
-using Bound;
-using Bound.Tablet.Models;
-using Bound.Tablet.Services.Interfaces;
+﻿using Bound.Tablet.Models;
 using Bound.Tablet.Views;
 using Newtonsoft.Json;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Bound.NFC
 {

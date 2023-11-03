@@ -11,6 +11,7 @@ using LocalNotifications;
 using Plugin.NFC;
 using Bound.NFC;
 using Bound.Tablet.ViewModels;
+using Bound.Tablet.Services;
 
 namespace Bound.Tablet.Droid
 {
@@ -35,6 +36,8 @@ namespace Bound.Tablet.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+
+            //StartService(new Intent(this, typeof(MyBackgroundService)));
 
             CreateNotificationFromIntent(Intent);
 

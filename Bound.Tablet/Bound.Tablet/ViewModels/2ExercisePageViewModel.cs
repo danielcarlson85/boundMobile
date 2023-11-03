@@ -1,5 +1,6 @@
 ﻿using Bound.NFC;
 using Bound.Tablet.Models;
+using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
@@ -27,14 +28,19 @@ namespace Bound.Tablet.ViewModels
 
             timer.Elapsed += Timer_Elapsed;
 
-            InitStatusTask(true);
+            //InitStatusTask(true);
             //InitCounterTimer(false);
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            LabelWeight = time.ToString();
+            if (time == 0)
+            {
+                timer.Stop();
+            }
+
             time--;
+            LabelWeight = time.ToString();
         }
 
         public void InitStatusTask(bool isRunning)
@@ -66,7 +72,7 @@ namespace Bound.Tablet.ViewModels
                     }
                     await Task.Delay(1000);
 
-                    await ioTHubManager.StartReceivingMessagesAsync(device.DeviceName);
+                    //await ioTHubManager.StartReceivingMessagesAsync(device.DeviceName);
                 }
             });
         }
@@ -90,6 +96,8 @@ namespace Bound.Tablet.ViewModels
             LabelWeight = "Device started.";
 
             App.User.Device = device;
+
+            _ = await new JWTHttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&status=online&reps=" + App.User.DeviceData.Weight);
 
             _ = await ioTHubManager.SendStartRequestToDevice(App.User);
         }

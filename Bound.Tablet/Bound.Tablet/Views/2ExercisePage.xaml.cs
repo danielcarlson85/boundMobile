@@ -22,10 +22,10 @@ namespace Bound.Tablet.Views
             Button clickedButton = (Button)sender; // Get the button that was clicked
 
             string weightToAdd = clickedButton.Text;
-            viewModel.ButtonAddWeight_ClickedAsync(weightToAdd);
+            await viewModel.ButtonAddWeight_ClickedAsync(weightToAdd);
         }
 
-        public async void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)
+        public void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)
         {
             Button clickedButton = (Button)sender; // Get the button that was clicked
 
