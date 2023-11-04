@@ -72,6 +72,7 @@ namespace Bound.Tablet.ViewModels
                 if (time <= 0)
                 {
                     time = 5;
+                    hasDeviceBeenStarted = true;
                     Debug.WriteLine("Send");
                     timer.Stop();
                     var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
@@ -92,18 +93,26 @@ namespace Bound.Tablet.ViewModels
         }
         string weightAsString = string.Empty;
 
+        bool hasDeviceBeenStarted = false;
+
         public void ButtonAddWeight_Clicked(string weightToAdd)
         {
-            CommonMethods.Vibrate();
+            if (hasDeviceBeenStarted)
+            {
+                Debug.WriteLine("Device has already been started with registered weights");
+                return;
+            }
 
+            CommonMethods.Vibrate();
             if (weightToAdd != "CE")
             {
-                weightAsString += weightToAdd;
-                var weight = long.Parse(weightAsString);
-                App.User.DeviceData.Weight = weight;
-
-                time = 5;
-                timer.Start();
+                    weightAsString += weightToAdd;
+                    var weight = long.Parse(weightAsString);
+                    App.User.DeviceData.Weight = weight;
+                    time = 5;
+                    timer.Start();
+                    LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
+                    Debug.WriteLine("Add " + LabelWeight.ToString());
             }
             else
             {
@@ -111,10 +120,6 @@ namespace Bound.Tablet.ViewModels
                 weightAsString = string.Empty;
                 timer.Stop();
             }
-
-            LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
-            Debug.WriteLine("Add " + LabelWeight.ToString());
-
         }
 
         public void ButtonRemoveWeight_Clicked()
