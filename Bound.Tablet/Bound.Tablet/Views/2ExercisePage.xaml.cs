@@ -17,12 +17,12 @@ namespace Bound.Tablet.Views
             BindingContext = viewModel = new ExercisePageViewModel();
         }
 
-        private async void ButtonAddWeight_Clicked(object sender, System.EventArgs e)
+        private void ButtonAddWeight_Clicked(object sender, System.EventArgs e)
         {
             Button clickedButton = (Button)sender; // Get the button that was clicked
 
             string weightToAdd = clickedButton.Text;
-            await viewModel.ButtonAddWeight_ClickedAsync(weightToAdd);
+            viewModel.ButtonAddWeight_Clicked(weightToAdd);
         }
 
         public void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using Bound.NFC;
 using Bound.Tablet.Settings;
 
 namespace Bound.Tablet.Services
@@ -30,6 +31,11 @@ namespace Bound.Tablet.Services
         public void ReAddToken()
         {
             DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+        }
+
+        public static void SendUserInfoToTablet()
+        {
+            var httpClient = new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email  + "&machinename=" + App.User.DeviceData.MachineName + "&weight=" + App.User.DeviceData.Weight + "&status=online&reps=0" );
         }
     }
 }

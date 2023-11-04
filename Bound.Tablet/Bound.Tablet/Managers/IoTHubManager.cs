@@ -88,24 +88,13 @@ namespace Devicemanager.API.Managers
         }
 
 
-        public async Task SendTextToIoTHubDevice(object messageToSend)
+        public async Task SendTextToIoTHubDevice(string messageToSend)
         {
-            //    if (!App.User.HasLoggedInOnDevice)
-            //    {
-
-            string user = JsonConvert.SerializeObject(messageToSend);
-
-
             var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
 
-            var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes(user));
+            var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes(messageToSend));
             await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
-            //App.User.HasLoggedInOnDevice = true;
-            //}
-            //else
-            //{
-            //    Debug.WriteLine("User already logged in on device");
-            //}
+          
         }
 
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
@@ -119,6 +108,45 @@ namespace Devicemanager.API.Managers
             try
             {
                 var methodInvocation = new CloudToDeviceMethod("start");
+                string json = JsonConvert.SerializeObject(user);
+
+                methodInvocation.SetPayloadJson(json);
+                result = await serviceClient.InvokeDeviceMethodAsync(user.DeviceData.MachineName, methodInvocation);
+
+                if (result.Status == 200)
+                {
+                    Debug.WriteLine("Response from device");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return HttpStatusCode.NotFound;
+            }
+            finally
+            {
+                if (deviceClient != null)
+                {
+                    await deviceClient.CloseAsync();
+                }
+
+                user.Device.IsRunning = false;
+            }
+
+            return (HttpStatusCode)result.Status;
+        }
+        
+        public async Task<HttpStatusCode> SendOnlineRequestToDevice(User user)
+        {
+            CloudToDeviceMethodResult result;
+            
+            App.User.Device = await Get(App.User.DeviceData.MachineName);
+            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(user.Device.ConnectionString, TransportType.Mqtt);
+            var serviceClient = ServiceClient.CreateFromConnectionString(this.IoTHubConnectionString);
+
+            try
+            {
+                var methodInvocation = new CloudToDeviceMethod("online");
                 string json = JsonConvert.SerializeObject(user);
 
                 methodInvocation.SetPayloadJson(json);

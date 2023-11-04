@@ -4,6 +4,7 @@ using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Plugin.NFC;
+using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -39,19 +40,17 @@ namespace Bound.Tablet.ViewModels
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             var machineNameFromTag = tagInfo.Records.First();
-
-            App.User.DeviceData.MachineName = machineNameFromTag.Message;
-            await ioTHubManager.SendStartRequestToDevice(App.User);
-
-
-
-
-            _ = await new JWTHttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&status=online&reps=" + App.User.DeviceData.Weight);
-
-            //await ioTHubManager.StartReceivingMessagesAsync();
-
-
-            Application.Current.MainPage = new ExercisePage();
+            if (string.IsNullOrEmpty(App.User.DeviceData.MachineName))
+            {
+                App.User.DeviceData.MachineName = machineNameFromTag.Message;
+                await ioTHubManager.SendTextToIoTHubDevice("online");
+                JWTHttpClient.SendUserInfoToTablet();
+                Application.Current.MainPage = new ExercisePage();
+            }
+            else
+            {
+                Debug.WriteLine("User already logged in");
+            }
         }
 
         public void ImageButtonContinue_Clicked()
