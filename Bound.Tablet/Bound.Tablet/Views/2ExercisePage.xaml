@@ -81,7 +81,8 @@
             <Button Text="9" Grid.Row="2" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
             <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
 
-            <Button Text="CE" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="CE" Grid.Row="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="Reset weights" Grid.Row="3" Grid.Column="2" BackgroundColor="Red" Clicked="ButtonReset_Clicked"/>
         </Grid>
     </Grid>
 </ContentPage>

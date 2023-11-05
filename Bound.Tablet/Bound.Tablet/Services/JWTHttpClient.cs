@@ -37,5 +37,10 @@ namespace Bound.Tablet.Services
         {
             var httpClient = new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email  + "&machinename=" + App.User.DeviceData.MachineName + "&weight=" + App.User.DeviceData.Weight + "&status=online&reps=0" );
         }
+        
+        public static void ResetUserInfoToTablet()
+        {
+            var httpClient = new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=0" + "&status=offline&reps=0");
+        }
     }
 }

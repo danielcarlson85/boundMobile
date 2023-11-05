@@ -108,6 +108,15 @@ namespace Devicemanager.API.Managers
 
         }
 
+        public async Task SendRestartTextToIoTHubDevice()
+        {
+
+            var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
+
+            var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes("restart"));
+            await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+        }
+
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
         {
             CloudToDeviceMethodResult result;

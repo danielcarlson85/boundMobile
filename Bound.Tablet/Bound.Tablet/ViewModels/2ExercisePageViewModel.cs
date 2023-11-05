@@ -7,6 +7,7 @@ using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -22,14 +23,21 @@ namespace Bound.Tablet.ViewModels
         public ExercisePageViewModel()
         {
             ioTHubManager = new IoTHubManager();
-            ImageCurrentMachine = App.User.DeviceData.MachineName;
-            LabelMachineName = "Current machine: " + App.User.DeviceData.MachineName;
-            LabelDeviceStatus = Color.Red;
-            LabelDeviceIsRunning = Color.Red;
+            ResetPage();
+            LabelWeight = "Please choose your weight.";
 
 
             InitStatusTask();
             InitCounterTimer();
+        }
+
+        public void ResetPage()
+        {
+            ImageCurrentMachine = App.User.DeviceData.MachineName;
+            LabelMachineName = "Current machine: " + App.User.DeviceData.MachineName;
+            LabelDeviceStatus = Color.Red;
+            LabelDeviceIsRunning = Color.Red;
+            if (timer != null) timer.Stop();
         }
 
         public void InitStatusTask()
@@ -59,6 +67,16 @@ namespace Bound.Tablet.ViewModels
             });
         }
 
+        internal async Task ButtonReset_Clicked()
+        {
+            ResetPage();
+            await ioTHubManager.SendRestartTextToIoTHubDevice();
+            JWTHttpClient.ResetUserInfoToTablet();
+
+            await ioTHubManager.SendTextToIoTHubDevice("online");
+
+            Application.Current.MainPage = new ExercisePage();
+        }
 
         public void InitCounterTimer()
         {
@@ -99,28 +117,32 @@ namespace Bound.Tablet.ViewModels
 
         public void ButtonAddWeight_Clicked(string weightToAdd)
         {
-            if (hasDeviceBeenStarted)
-            {
-                Debug.WriteLine("Device has already been started with registered weights");
-                return;
-            }
-
             CommonMethods.Vibrate();
             if (weightToAdd != "CE")
             {
-                    weightAsString += weightToAdd;
-                    var weight = long.Parse(weightAsString);
-                    App.User.DeviceData.Weight = weight;
-                    time = 5;
-                    timer.Start();
-                    LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
-                    Debug.WriteLine("Add " + LabelWeight.ToString());
+                weightAsString += weightToAdd;
+                var weight = long.Parse(weightAsString);
+                App.User.DeviceData.Weight = weight;
+                time = 5;
+                timer.Start();
+                LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
+                Debug.WriteLine("Add " + LabelWeight.ToString());
             }
             else
             {
                 App.User.DeviceData.Weight = 0;
                 weightAsString = string.Empty;
+                LabelWeight = "Please choose your weight.";
                 timer.Stop();
+            }
+
+            if (App.User.DeviceData.Weight > 300)
+            {
+                App.User.DeviceData.Weight = 0;
+                weightAsString = string.Empty;
+                LabelWeight = "Too much weight.";
+                timer.Stop();
+                return;
             }
         }
 

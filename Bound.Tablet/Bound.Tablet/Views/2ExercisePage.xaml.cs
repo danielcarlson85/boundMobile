@@ -44,8 +44,9 @@ namespace Bound.Tablet.Views
             base.OnDisappearing();
         }
 
-        private void Button_Clicked(object sender, System.EventArgs e)
+        private async void ButtonReset_Clicked(object sender, System.EventArgs e)
         {
+            await viewModel.ButtonReset_Clicked();
 
         }
     }
