@@ -4,6 +4,7 @@ using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -87,7 +88,8 @@ namespace Bound.Tablet.ViewModels
 
                     App.User.Device = device;
                     JWTHttpClient.SendUserInfoToTablet();
-                    _ = await ioTHubManager.SendStartRequestToDevice(App.User);
+
+                    await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
                 }
             };
         }

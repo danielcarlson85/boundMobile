@@ -22,6 +22,7 @@ namespace Devicemanager.API.Interfaces
         Task SendDataToIoTHubDevice(IoTHubDevice ioTHubDevice, string messageToSend);
 
         Task<HttpStatusCode> SendStartRequestToDevice(User user);
+        Task SendStartTextToIoTHubDevice(string messageToSend);
         Task<HttpStatusCode> SendStopRequestToDevice(IoTHubDevice deviceName);
         Task<string> StartReceivingMessages();
     }

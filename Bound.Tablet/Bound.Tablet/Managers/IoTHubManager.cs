@@ -97,6 +97,17 @@ namespace Devicemanager.API.Managers
           
         }
 
+        public async Task SendStartTextToIoTHubDevice(User user)
+        {
+            var userAsJson = JsonConvert.SerializeObject(user);
+
+            var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
+
+            var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes("start****"+userAsJson));
+            await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+
+        }
+
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
         {
             CloudToDeviceMethodResult result;
@@ -253,6 +264,11 @@ namespace Devicemanager.API.Managers
         }
 
         Task<string> IIoTHubManager.StartReceivingMessages()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SendStartTextToIoTHubDevice(string messageToSend)
         {
             throw new NotImplementedException();
         }
