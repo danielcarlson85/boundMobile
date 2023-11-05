@@ -42,19 +42,28 @@ namespace Bound.Tablet.ViewModels
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             var machineNameFromTag = tagInfo.Records.First();
-            //if (string.IsNullOrEmpty(App.User.DeviceData.MachineName))
-            //{
-            App.User.DeviceData.MachineName = machineNameFromTag.Message;
-            await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
 
-            await ioTHubManager.SendTextToIoTHubDevice("online");
-            JWTHttpClient.SendUserInfoToTablet();
-            Application.Current.MainPage = new ExercisePage();
-            //}
-            //else
-            //{
-            //    Debug.WriteLine("User already logged in");
-            //}
+            App.User.DeviceData.MachineName = machineNameFromTag.Message;
+            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+            if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
+            {
+                //if (string.IsNullOrEmpty(App.User.DeviceData.MachineName))
+                //{
+                await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
+                await ioTHubManager.SendTextToIoTHubDevice("online");
+                JWTHttpClient.SendUserInfoToTablet();
+                Application.Current.MainPage = new ExercisePage();
+
+                //}
+                //else
+                //{
+                //    Debug.WriteLine("User already logged in");
+                //}
+            }
+            else
+            {
+                    Debug.WriteLine("This device is not online");
+            }
         }
 
         public void ImageButtonContinue_Clicked()
