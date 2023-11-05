@@ -13,8 +13,9 @@
             <RowDefinition Height="100"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="130"/>
         </Grid.RowDefinitions>
 
         <Image Source="{Binding ImageCurrentMachine}" BackgroundColor="Wheat" Grid.Row="0"/>
@@ -45,13 +46,15 @@
         </StackLayout>
 
         <Label Grid.Row="4" FontSize="16" Margin="0,20,0,0" Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+        <Label Grid.Row="5" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelText}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+
         <!--<ImageButton Source="backbutton"
                      HorizontalOptions="CenterAndExpand"  
                      Clicked="ImageButtonBack_Clicked"
                      WidthRequest="50"
                      BackgroundColor="Transparent"/>-->
 
-        <Grid Grid.Row="5" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
+        <Grid Grid.Row="6" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
             <!-- First Row -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -82,7 +85,7 @@
             <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
 
             <Button Text="CE" Grid.Row="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
-            <Button Text="Reset weights" Grid.Row="3" Grid.Column="2" BackgroundColor="Red" Clicked="ButtonReset_Clicked"/>
+            <Button Text="Change weights" Grid.Row="3" Grid.Column="2" BackgroundColor="Red" Clicked="ButtonReset_Clicked"/>
         </Grid>
     </Grid>
 </ContentPage>

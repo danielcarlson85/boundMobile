@@ -19,12 +19,13 @@ namespace Bound.Tablet.ViewModels
         IoTHubDevice device;
         System.Timers.Timer timer;
         int time = 5;
+        string weightAsString = string.Empty;
 
         public ExercisePageViewModel()
         {
             ioTHubManager = new IoTHubManager();
             ResetPage();
-            LabelWeight = "Please choose your weight.";
+            LabelText = "Please choose your weight.";
 
 
             InitStatusTask();
@@ -70,11 +71,11 @@ namespace Bound.Tablet.ViewModels
         internal async Task ButtonReset_Clicked()
         {
             ResetPage();
-            await ioTHubManager.SendRestartTextToIoTHubDevice();
+            await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
             JWTHttpClient.ResetUserInfoToTablet();
 
             await ioTHubManager.SendTextToIoTHubDevice("online");
-
+            hasBeenStarted = false;
             Application.Current.MainPage = new ExercisePage();
         }
 
@@ -86,37 +87,46 @@ namespace Bound.Tablet.ViewModels
                 time--;
                 Debug.WriteLine(time);
 
-                LabelWeight = "Starting device " + time;
+                LabelText = "Starting device in: " + time;
 
                 if (time <= 0)
                 {
                     time = 5;
-                    hasDeviceBeenStarted = true;
-                    Debug.WriteLine("Send");
+                    Debug.WriteLine("Starting device");
                     timer.Stop();
                     var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
 
                     if (device == null)
                     {
-                        LabelWeight = "This machine is not yet registred, please use another one.";
+                        LabelText = "This machine is not yet registred, please use another one.";
                         return;
                     }
 
-                    LabelWeight = "Device started.";
+                    LabelText = "Device started.";
 
                     App.User.Device = device;
                     JWTHttpClient.SendUserInfoToTablet();
-
+                    hasBeenStarted = true;
                     await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
+                    
                 }
             };
         }
-        string weightAsString = string.Empty;
 
-        bool hasDeviceBeenStarted = false;
+        bool hasBeenStarted = false;
+
 
         public void ButtonAddWeight_Clicked(string weightToAdd)
         {
+            timer.Stop();
+
+            if (hasBeenStarted)
+            {
+                LabelWeight = "Device is already running";
+                Debug.WriteLine("Device is already running");
+                return;
+            }
+
             CommonMethods.Vibrate();
             if (weightToAdd != "CE")
             {
@@ -127,12 +137,15 @@ namespace Bound.Tablet.ViewModels
                 timer.Start();
                 LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
                 Debug.WriteLine("Add " + LabelWeight.ToString());
+
+
             }
             else
             {
                 App.User.DeviceData.Weight = 0;
                 weightAsString = string.Empty;
-                LabelWeight = "Please choose your weight.";
+                LabelText = "Please choose your weight.";
+                LabelWeight = "0 kg";
                 timer.Stop();
             }
 
@@ -140,10 +153,12 @@ namespace Bound.Tablet.ViewModels
             {
                 App.User.DeviceData.Weight = 0;
                 weightAsString = string.Empty;
-                LabelWeight = "Too much weight.";
+                LabelText = "Too much weight.";
+                LabelWeight = "0 kg";
                 timer.Stop();
                 return;
             }
+
         }
 
         public void ButtonRemoveWeight_Clicked()
@@ -155,6 +170,7 @@ namespace Bound.Tablet.ViewModels
             timer.Start();
             App.User.DeviceData.Weight--;
             LabelWeight = App.User.DeviceData.Weight.ToString();
+
         }
     }
 }

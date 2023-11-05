@@ -33,6 +33,14 @@ namespace Bound.Tablet.ViewModels
         {
             get { return labelWeight; }
             set { SetProperty(ref labelWeight, value); }
+
+        }
+
+        private string labelText;
+        public string LabelText
+        {
+            get { return labelText; }
+            set { SetProperty(ref labelText, value); }
         }
 
         private string labelMachineName;
@@ -41,7 +49,7 @@ namespace Bound.Tablet.ViewModels
             get { return labelMachineName; }
             set { SetProperty(ref labelMachineName, value); }
         }
-        
+
         private string imageNFC;
         public string ImageNFC
         {
@@ -69,7 +77,7 @@ namespace Bound.Tablet.ViewModels
             get { return labelDeviceIsRunning; }
             set { SetProperty(ref labelDeviceIsRunning, value); }
         }
-        
+
         private System.Drawing.Color deviceStatus;
         public System.Drawing.Color DeviceStatus
         {
@@ -84,7 +92,7 @@ namespace Bound.Tablet.ViewModels
             set => SetProperty(ref _isRefreshing, value);
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName]string propertyName = "", Action onChanged = null)
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "", Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value)) return false;
 

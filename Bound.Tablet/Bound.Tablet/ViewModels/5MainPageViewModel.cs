@@ -21,6 +21,7 @@ namespace Bound.Tablet.ViewModels
             ioTHubManager = new IoTHubManager();
 
         }
+
         public void StartListeningForNFC()
         {
             if (_eventsAlreadySubscribed)
@@ -33,6 +34,7 @@ namespace Bound.Tablet.ViewModels
 
         public void OnBackButtonPressed()
         {
+
             CrossNFC.Current.OnMessageReceived -= Current_OnMessageReceived;
             CrossNFC.Current.StopListening();
         }
@@ -40,17 +42,19 @@ namespace Bound.Tablet.ViewModels
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             var machineNameFromTag = tagInfo.Records.First();
-            if (string.IsNullOrEmpty(App.User.DeviceData.MachineName))
-            {
-                App.User.DeviceData.MachineName = machineNameFromTag.Message;
-                await ioTHubManager.SendTextToIoTHubDevice("online");
-                JWTHttpClient.SendUserInfoToTablet();
-                Application.Current.MainPage = new ExercisePage();
-            }
-            else
-            {
-                Debug.WriteLine("User already logged in");
-            }
+            //if (string.IsNullOrEmpty(App.User.DeviceData.MachineName))
+            //{
+            App.User.DeviceData.MachineName = machineNameFromTag.Message;
+            await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
+
+            await ioTHubManager.SendTextToIoTHubDevice("online");
+            JWTHttpClient.SendUserInfoToTablet();
+            Application.Current.MainPage = new ExercisePage();
+            //}
+            //else
+            //{
+            //    Debug.WriteLine("User already logged in");
+            //}
         }
 
         public void ImageButtonContinue_Clicked()
