@@ -63,6 +63,8 @@ namespace Bound.Tablet.ViewModels
             else
             {
                     Debug.WriteLine("This device is not online");
+                    await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
+
             }
         }
 
