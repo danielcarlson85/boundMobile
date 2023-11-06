@@ -20,26 +20,26 @@ namespace Bound.Tablet.ViewModels
         System.Timers.Timer timer;
         int time = 5;
         string weightAsString = string.Empty;
+        bool hasBeenStarted = false;
+
 
         public ExercisePageViewModel()
         {
             ioTHubManager = new IoTHubManager();
-            ResetPage();
             LabelText = "Please choose your weight.";
-
+            ImageCurrentMachine = App.User.DeviceData.MachineName;
+            LabelMachineName = "Current machine: " + App.User.DeviceData.MachineName;
+            LabelDeviceStatus = Color.Red;
+            LabelDeviceIsRunning = Color.Red;
+            string weightAsString = string.Empty;
+            App.User.DeviceData.Weight = 0;
+            if (timer != null) timer.Stop();
 
             InitStatusTask();
             InitCounterTimer();
         }
 
-        public void ResetPage()
-        {
-            ImageCurrentMachine = App.User.DeviceData.MachineName;
-            LabelMachineName = "Current machine: " + App.User.DeviceData.MachineName;
-            LabelDeviceStatus = Color.Red;
-            LabelDeviceIsRunning = Color.Red;
-            if (timer != null) timer.Stop();
-        }
+  
 
         public void InitStatusTask()
         {
@@ -70,13 +70,15 @@ namespace Bound.Tablet.ViewModels
 
         internal async Task ButtonReset_Clicked()
         {
-            ResetPage();
+            if (timer != null) timer.Stop();
             await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
             JWTHttpClient.ResetUserInfoToTablet();
-
+            App.User.DeviceData.Weight = 0;
+            LabelText = "Please choose your weight.";
+            LabelWeight = "0 kg";
+            weightAsString = string.Empty;
             await ioTHubManager.SendTextToIoTHubDevice("online");
             hasBeenStarted = false;
-            Application.Current.MainPage = new ExercisePage();
         }
 
         public void InitCounterTimer()
@@ -113,7 +115,6 @@ namespace Bound.Tablet.ViewModels
             };
         }
 
-        bool hasBeenStarted = false;
 
 
         public void ButtonAddWeight_Clicked(string weightToAdd)
@@ -122,6 +123,8 @@ namespace Bound.Tablet.ViewModels
 
             if (hasBeenStarted)
             {
+                App.User.DeviceData.Weight = 0;
+                weightAsString = string.Empty;
                 LabelWeight = "Device is already running";
                 Debug.WriteLine("Device is already running");
                 return;
@@ -137,8 +140,6 @@ namespace Bound.Tablet.ViewModels
                 timer.Start();
                 LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
                 Debug.WriteLine("Add " + LabelWeight.ToString());
-
-
             }
             else
             {
