@@ -117,9 +117,16 @@ namespace Bound.Tablet.ViewModels
 
 
 
-        public void ButtonAddWeight_Clicked(string weightToAdd)
+        public async void ButtonAddWeight_Clicked(string weightToAdd)
         {
             timer.Stop();
+
+            if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
+            {
+                await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
+                timer.Stop();
+                return;
+            }
 
             if (hasBeenStarted)
             {

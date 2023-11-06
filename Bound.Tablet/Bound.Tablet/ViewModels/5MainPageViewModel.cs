@@ -41,30 +41,28 @@ namespace Bound.Tablet.ViewModels
 
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
-            var machineNameFromTag = tagInfo.Records.First();
-
-            App.User.DeviceData.MachineName = machineNameFromTag.Message;
-            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-            if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
+            try
             {
-                //if (string.IsNullOrEmpty(App.User.DeviceData.MachineName))
-                //{
-                await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
-                await ioTHubManager.SendTextToIoTHubDevice("online");
-                JWTHttpClient.SendUserInfoToTablet();
-                Application.Current.MainPage = new ExercisePage();
+                var machineNameFromTag = tagInfo.Records.First();
 
-                //}
-                //else
-                //{
-                //    Debug.WriteLine("User already logged in");
-                //}
-            }
-            else
-            {
+                App.User.DeviceData.MachineName = machineNameFromTag.Message;
+                var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+                if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
+                {
+                    await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
+                    await ioTHubManager.SendTextToIoTHubDevice("online");
+                    JWTHttpClient.SendUserInfoToTablet();
+                    Application.Current.MainPage = new ExercisePage();
+                }
+                else
+                {
                     Debug.WriteLine("This device is not online");
                     await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
-
+                }
+            }
+            catch (System.Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("This machine is not online, try again.", "Machine not online", "OK");
             }
         }
 
