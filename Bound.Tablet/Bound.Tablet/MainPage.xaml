@@ -12,21 +12,24 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Label FontSize="20" Grid.Row="1" 
            Text="Put your mobile phone on the NFC tag that you can find on the machine." 
            TextColor="GreenYellow" 
            HorizontalTextAlignment="Center"/>
-        
+
         <StackLayout Orientation="Horizontal" Grid.Row="2" HorizontalOptions="CenterAndExpand">
-            <Button 
-            Clicked="ImageButtonHeatmap_Clicked"
-            BackgroundColor="Black" Opacity="0.5"
-            Text="Heat map" TextColor="Wheat"/> 
-            <Button 
-            Clicked="ImageButtonNFCSettings_Clicked"
-            BackgroundColor="Black" Opacity="0.5"
-            Text="NFC Settings" TextColor="Wheat"/>
+
+            <Button  Clicked="ImageButtonHeatmap_Clicked" BackgroundColor="Black" Opacity="0.5" Text="Heat map" TextColor="Wheat"/>
+            <Button  Clicked="ImageButtonNFCSettings_Clicked" BackgroundColor="Black" Opacity="0.5" Text="NFC Settings" TextColor="Wheat"/>
         </StackLayout>
+        
+        <!--<StackLayout Orientation="Horizontal" Grid.Row="3" HorizontalOptions="CenterAndExpand">
+
+            <Button  Clicked="ButtonShutdownRPI_Clicked" BackgroundColor="Black" Opacity="0.5" Text="Shutdown RPI" TextColor="Wheat"/>
+            <Button  Clicked="ButtonRestartRPI_Clicked" BackgroundColor="Black" Opacity="0.5" Text="Restart RPI" TextColor="Wheat"/>
+        </StackLayout>-->
     </Grid>
 </ContentPage>

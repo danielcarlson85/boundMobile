@@ -18,6 +18,7 @@ namespace Bound.NFC
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            
             viewModel.StartListeningForNFC();
         }
 
@@ -42,6 +43,14 @@ namespace Bound.NFC
         {
             CommonMethods.Vibrate();
             Application.Current.MainPage = new NFCSettingsPage();
+        }
+
+        private void ButtonRestartDevice_Clicked(object sender, System.EventArgs e)
+        {
+        }
+        
+        private void ButtonShutdownRPI_Clicked(object sender, System.EventArgs e)
+        {
         }
     }
 }

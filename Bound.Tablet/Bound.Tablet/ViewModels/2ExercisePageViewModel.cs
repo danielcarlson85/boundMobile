@@ -1,11 +1,8 @@
 ﻿using Bound.NFC;
 using Bound.Tablet.Models;
 using Bound.Tablet.Services;
-using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
-using Newtonsoft.Json;
-using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,7 +36,7 @@ namespace Bound.Tablet.ViewModels
             InitCounterTimer();
         }
 
-  
+
 
         public void InitStatusTask()
         {
@@ -71,13 +68,15 @@ namespace Bound.Tablet.ViewModels
         internal async Task ButtonReset_Clicked()
         {
             if (timer != null) timer.Stop();
-            await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
+            LabelText = "Resetting machine, please wait...";
+            await ioTHubManager.SendTextToIoTHubDevice("restart");
             JWTHttpClient.ResetUserInfoToTablet();
             App.User.DeviceData.Weight = 0;
+            Thread.Sleep(3000);
             LabelText = "Please choose your weight.";
             LabelWeight = "0 kg";
             weightAsString = string.Empty;
-            await ioTHubManager.SendTextToIoTHubDevice("online");
+            await ioTHubManager.SendTextToIoTHubDevice("login");
             hasBeenStarted = false;
         }
 
@@ -94,7 +93,7 @@ namespace Bound.Tablet.ViewModels
                 if (time <= 0)
                 {
                     time = 5;
-                    Debug.WriteLine("Starting device");
+                    Debug.WriteLine("Device started...");
                     timer.Stop();
                     var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
 
@@ -104,13 +103,13 @@ namespace Bound.Tablet.ViewModels
                         return;
                     }
 
-                    LabelText = "Device started.";
+                    LabelText = "Device started...";
 
                     App.User.Device = device;
                     JWTHttpClient.SendUserInfoToTablet();
                     hasBeenStarted = true;
                     await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
-                    
+
                 }
             };
         }

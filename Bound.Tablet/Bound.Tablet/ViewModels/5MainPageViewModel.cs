@@ -4,6 +4,7 @@ using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Plugin.NFC;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Xamarin.Forms;
@@ -50,7 +51,7 @@ namespace Bound.Tablet.ViewModels
                 if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
                 {
                     await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
-                    await ioTHubManager.SendTextToIoTHubDevice("online");
+                    await ioTHubManager.SendTextToIoTHubDevice("login");
                     JWTHttpClient.SendUserInfoToTablet();
                     Application.Current.MainPage = new ExercisePage();
                 }
