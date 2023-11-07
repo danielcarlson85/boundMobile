@@ -49,5 +49,21 @@ namespace Bound.Tablet.Views
             await viewModel.ButtonReset_Clicked();
 
         }
+
+        private void ButtonRestartDevice_Clicked(object sender, System.EventArgs e)
+        {
+            viewModel.ButtonRestartDevice_Clicked();
+
+        }
+
+        private void ShutdownRPI_Clicked(object sender, System.EventArgs e)
+        {
+            viewModel.ShutdownRPI_Clicked();
+        }
+
+        private void RestartRPI_Clicked(object sender, System.EventArgs e)
+        {
+            viewModel.RestartRPI_Clicked();
+        }
     }
 }

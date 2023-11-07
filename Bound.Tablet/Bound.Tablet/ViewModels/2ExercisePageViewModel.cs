@@ -1,6 +1,7 @@
 ﻿using Bound.NFC;
 using Bound.Tablet.Models;
 using Bound.Tablet.Services;
+using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
 using System.Diagnostics;
@@ -63,6 +64,27 @@ namespace Bound.Tablet.ViewModels
                     await Task.Delay(1000);
                 }
             });
+        }
+
+        internal async void RestartRPI_Clicked()
+        {
+            await ioTHubManager.SendTextToIoTHubDevice("restartRPI");
+            JWTHttpClient.ResetUserInfoToTablet();
+            Application.Current.MainPage = new MainPage();
+        }
+
+        internal async void ShutdownRPI_Clicked()
+        {
+            await ioTHubManager.SendTextToIoTHubDevice("shutdownRPI");
+            JWTHttpClient.ResetUserInfoToTablet();
+            Application.Current.MainPage = new MainPage();
+
+        }
+
+        internal async void ButtonRestartDevice_Clicked()
+        {
+            await ioTHubManager.SendTextToIoTHubDevice("restart");
+            Application.Current.MainPage = new ExercisePage();
         }
 
         internal async Task ButtonReset_Clicked()

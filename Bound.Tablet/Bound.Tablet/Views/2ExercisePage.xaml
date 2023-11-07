@@ -8,53 +8,38 @@
         <viewModels:ExercisePageViewModel />
     </ContentPage.BindingContext>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="130"/>
-        </Grid.RowDefinitions>
+    <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="90"/>
+            </Grid.RowDefinitions>
 
-        <Image Source="{Binding ImageCurrentMachine}" BackgroundColor="Wheat" Grid.Row="0"/>
-        <Label FontSize="16" TextColor="GreenYellow" Text="{Binding LabelMachineName}" Grid.Row="1" />
+            <Image Source="{Binding ImageCurrentMachine}" BackgroundColor="Wheat" Grid.Row="0"/>
+            <Label FontSize="16" TextColor="GreenYellow" Text="{Binding LabelMachineName}" Grid.Row="1" />
 
-        <StackLayout Orientation="Horizontal" Grid.Row="2" VerticalOptions="CenterAndExpand">
-            <Label FontSize="16" Text="Device connected: " TextColor="GreenYellow"/>
-            <Button 
-                    WidthRequest      ="20"
-                    HeightRequest     ="20"
-                    CornerRadius      ="40"
-                    VerticalOptions   ="Center"
-                    HorizontalOptions ="Center"
-                    BackgroundColor   ="{Binding LabelDeviceStatus}"/>
+            <StackLayout Orientation="Horizontal" Grid.Row="2" VerticalOptions="CenterAndExpand">
+                <Label FontSize="16" Text="Device connected: " TextColor="GreenYellow"/>
+                <Button WidthRequest ="20" HeightRequest ="20" CornerRadius ="40" VerticalOptions="Center" HorizontalOptions ="Center" BackgroundColor="{Binding LabelDeviceStatus}"/>
+            </StackLayout>
 
-        </StackLayout>
+            <StackLayout Orientation="Horizontal" Grid.Row="3" VerticalOptions="CenterAndExpand">
+                <Label FontSize="16" Text="Is running: " TextColor="GreenYellow"/>
 
-        <StackLayout Orientation="Horizontal" Grid.Row="3" VerticalOptions="CenterAndExpand">
-            <Label FontSize="16" Text="Is running: " TextColor="GreenYellow"/>
-            <!--<Button
-                    WidthRequest      ="20"
-                    HeightRequest     ="20"
-                    CornerRadius      ="40"
-                    VerticalOptions   ="Center"
-                    HorizontalOptions ="Center"
-                    BackgroundColor   ="{Binding LabelDeviceIsRunning}"/>-->
+            </StackLayout>
 
-        </StackLayout>
+            <Label Grid.Row="4" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+            <Label Grid.Row="5" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelText}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
+            <Button Grid.Row="6" Text="Restart device" x:Name="ButtonRestartDevice" Clicked="ButtonRestartDevice_Clicked"/>
+        </Grid>
 
-        <Label Grid.Row="4" FontSize="16" Margin="0,20,0,0" Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
-        <Label Grid.Row="5" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelText}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
-
-        <!--<ImageButton Source="backbutton"
-                     HorizontalOptions="CenterAndExpand"  
-                     Clicked="ImageButtonBack_Clicked"
-                     WidthRequest="50"
-                     BackgroundColor="Transparent"/>-->
-
-        <Grid Grid.Row="6" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
+        <Grid Grid.Row="7" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
             <!-- First Row -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -82,10 +67,15 @@
             <Button Text="7" Grid.Row="2" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
             <Button Text="8" Grid.Row="2" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
             <Button Text="9" Grid.Row="2" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
-            <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
 
             <Button Text="CE" Grid.Row="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
-            <Button Text="Change weights" Grid.Row="3" Grid.Column="2" BackgroundColor="Red" Clicked="ButtonReset_Clicked"/>
+            <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
         </Grid>
-    </Grid>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Restart RPI" Grid.Row="4" Grid.Column="0" BackgroundColor="Red" Clicked="RestartRPI_Clicked"/>
+            <Button Text="Shutdown RPI" Grid.Row="4" Grid.Column="1"  BackgroundColor="Red" Clicked="ShutdownRPI_Clicked"/>
+        </StackLayout>
+
+    </StackLayout>
+    
 </ContentPage>
