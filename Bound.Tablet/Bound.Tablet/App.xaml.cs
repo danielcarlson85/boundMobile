@@ -12,6 +12,7 @@ namespace Bound.NFC
 
         public static User User = new User();
 
+        public static bool IsOn { get; internal set; }
 
         public App()
         {

@@ -1,4 +1,5 @@
-﻿using Bound.Tablet.ViewModels;
+﻿using Bound.NFC;
+using Bound.Tablet.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -52,8 +53,11 @@ namespace Bound.Tablet.Views
 
         private void ButtonRestartDevice_Clicked(object sender, System.EventArgs e)
         {
-            viewModel.ButtonRestartDevice_Clicked();
-
+            if (!App.IsOn)
+            {
+                App.IsOn = true;
+                viewModel.ButtonRestartDevice_Clicked();
+            }
         }
 
         private void ShutdownRPI_Clicked(object sender, System.EventArgs e)

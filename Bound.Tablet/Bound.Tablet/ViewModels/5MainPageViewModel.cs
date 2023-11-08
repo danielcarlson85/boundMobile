@@ -40,26 +40,40 @@ namespace Bound.Tablet.ViewModels
             CrossNFC.Current.StopListening();
         }
 
+        int total =0;
+        static string machineNameFromTag = String.Empty;
+
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
+            total++;
+            Debug.WriteLine(total);
+
             try
             {
-                var machineNameFromTag = tagInfo.Records.First();
+                //if (!App.IsOn && string.IsNullOrEmpty(machineNameFromTag))
+                if (!App.IsOn)
+                {
+                    App.IsOn = true;
+                    machineNameFromTag = tagInfo.Records.First().Message;
 
-                App.User.DeviceData.MachineName = machineNameFromTag.Message;
-                var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-                if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
-                {
-                    await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-                    await ioTHubManager.SendTextToIoTHubDevice("login");
-                    JWTHttpClient.SendUserInfoToTablet();
-                    Application.Current.MainPage = new ExercisePage();
+                    App.User.DeviceData.MachineName = machineNameFromTag;
+                    var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+                    if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
+                    {
+                        await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+                        await ioTHubManager.SendTextToIoTHubDevice("login");
+                        JWTHttpClient.SendUserInfoToTablet();
+                        Application.Current.MainPage = new ExercisePage();
+                    }
+                    else
+                    {
+                        Debug.WriteLine("This device is not online");
+                        await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
+                    }
                 }
-                else
-                {
-                    Debug.WriteLine("This device is not online");
-                    await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
-                }
+
+                App.IsOn = false;
+
             }
             catch (System.Exception)
             {

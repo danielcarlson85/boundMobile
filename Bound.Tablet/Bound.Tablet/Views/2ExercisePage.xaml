@@ -73,7 +73,7 @@
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
             <Button Text="Restart RPI" MinimumWidthRequest="50"  BackgroundColor="Red" Clicked="RestartRPI_Clicked"/>
             <Button Text="Shutdown RPI" BackgroundColor="Red" Clicked="ShutdownRPI_Clicked"/>
-            <Button Text="Restart device" BackgroundColor="Red" x:Name="ButtonRestartDevice" Clicked="ButtonRestartDevice_Clicked"/>
+            <!--<Button Text="Restart device" BackgroundColor="Red" x:Name="ButtonRestartDevice" Clicked="ButtonRestartDevice_Clicked"/>-->
         </StackLayout>
     </StackLayout>
 </ContentPage>

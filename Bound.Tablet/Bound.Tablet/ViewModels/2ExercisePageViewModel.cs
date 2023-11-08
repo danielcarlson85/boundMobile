@@ -85,6 +85,8 @@ namespace Bound.Tablet.ViewModels
         {
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet();
+
+            App.IsOn=false;
             Application.Current.MainPage = new MainPage();
         }
 
