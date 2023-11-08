@@ -68,12 +68,14 @@
             <Button Text="9" Grid.Row="2" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
 
             <Button Text="CE" Grid.Row="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
-            <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
+            <Button Text="" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" />
+            <Button Text="0" Grid.Row="3" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
         </Grid>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Button Text="Reset W" BackgroundColor="Red" x:Name="ButtonRestartDevice" Clicked="ButtonReset_Clicked"/>
             <Button Text="Restart RPI" MinimumWidthRequest="50"  BackgroundColor="Red" Clicked="RestartRPI_Clicked"/>
             <Button Text="Shutdown RPI" BackgroundColor="Red" Clicked="ShutdownRPI_Clicked"/>
-            <!--<Button Text="Restart device" BackgroundColor="Red" x:Name="ButtonRestartDevice" Clicked="ButtonRestartDevice_Clicked"/>-->
+
         </StackLayout>
     </StackLayout>
 </ContentPage>

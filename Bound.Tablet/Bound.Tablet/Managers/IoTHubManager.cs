@@ -94,6 +94,7 @@ namespace Devicemanager.API.Managers
 
             var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes(messageToSend));
             await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+            await serviceClient.CloseAsync();
           
         }
 
@@ -105,6 +106,7 @@ namespace Devicemanager.API.Managers
 
             var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes("start****"+userAsJson));
             await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+            await serviceClient.CloseAsync();
 
         }
 
