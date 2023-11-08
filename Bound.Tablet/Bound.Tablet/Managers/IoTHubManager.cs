@@ -110,6 +110,19 @@ namespace Devicemanager.API.Managers
 
         }
 
+
+        public async Task SendLoginTextToIoTHubDevice(User user)
+        {
+            var userAsJson = JsonConvert.SerializeObject(user);
+
+            var serviceClient = ServiceClient.CreateFromConnectionString(IoTHubConnectionString);
+
+            var commandMessage = new Microsoft.Azure.Devices.Message(Encoding.ASCII.GetBytes("login****"+userAsJson));
+            await serviceClient.SendAsync(App.User.DeviceData.MachineName, commandMessage);
+            await serviceClient.CloseAsync();
+
+        }
+
         public async Task<HttpStatusCode> SendStartRequestToDevice(User user)
         {
             CloudToDeviceMethodResult result;
