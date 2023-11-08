@@ -36,10 +36,9 @@
 
             <Label Grid.Row="4" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
             <Label Grid.Row="5" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelText}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
-            <Button Grid.Row="6" Text="Restart device" x:Name="ButtonRestartDevice" Clicked="ButtonRestartDevice_Clicked"/>
         </Grid>
 
-        <Grid Grid.Row="7" HorizontalOptions="Center" Margin="0,0,0,5" x:Name="GridNumber">
+        <Grid Grid.Row="7" HorizontalOptions="Center" x:Name="GridNumber">
             <!-- First Row -->
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
@@ -72,10 +71,9 @@
             <Button Text="0" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
         </Grid>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-            <Button Text="Restart RPI" Grid.Row="4" Grid.Column="0" BackgroundColor="Red" Clicked="RestartRPI_Clicked"/>
-            <Button Text="Shutdown RPI" Grid.Row="4" Grid.Column="1"  BackgroundColor="Red" Clicked="ShutdownRPI_Clicked"/>
+            <Button Text="Restart RPI" MinimumWidthRequest="50"  BackgroundColor="Red" Clicked="RestartRPI_Clicked"/>
+            <Button Text="Shutdown RPI" BackgroundColor="Red" Clicked="ShutdownRPI_Clicked"/>
+            <Button Text="Restart device" BackgroundColor="Red" x:Name="ButtonRestartDevice" Clicked="ButtonRestartDevice_Clicked"/>
         </StackLayout>
-
     </StackLayout>
-    
 </ContentPage>

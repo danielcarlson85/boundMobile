@@ -83,15 +83,16 @@ namespace Bound.Tablet.ViewModels
 
         internal async void ButtonRestartDevice_Clicked()
         {
-            await ioTHubManager.SendTextToIoTHubDevice("restart");
-            Application.Current.MainPage = new ExercisePage();
+            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+            JWTHttpClient.ResetUserInfoToTablet();
+            Application.Current.MainPage = new MainPage();
         }
 
         internal async Task ButtonReset_Clicked()
         {
             if (timer != null) timer.Stop();
             LabelText = "Resetting machine, please wait...";
-            await ioTHubManager.SendTextToIoTHubDevice("restart");
+            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet();
             App.User.DeviceData.Weight = 0;
             Thread.Sleep(3000);

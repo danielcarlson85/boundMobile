@@ -50,7 +50,7 @@ namespace Bound.Tablet.ViewModels
                 var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
                 if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
                 {
-                    await ioTHubManager.SendRestartTextToIoTHubDevice(App.User.DeviceData.MachineName);
+                    await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
                     await ioTHubManager.SendTextToIoTHubDevice("login");
                     JWTHttpClient.SendUserInfoToTablet();
                     Application.Current.MainPage = new ExercisePage();
