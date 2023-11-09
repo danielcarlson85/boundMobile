@@ -88,10 +88,10 @@ namespace Bound.Tablet.ViewModels
             Application.Current.MainPage = new MainPage();
         }
 
-        internal async Task ButtonReset_Clicked()
+        internal async Task ButtonResetWeight_Clicked()
         {
             if (timer != null) timer.Stop();
-            LabelText = "Resetting machine, please wait...";
+            LabelText = "Resetting weight on machine, please wait...";
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet();
             App.User.DeviceData.Weight = 0;
@@ -99,8 +99,23 @@ namespace Bound.Tablet.ViewModels
             LabelText = "Please choose your weight.";
             LabelWeight = "0 kg";
             weightAsString = string.Empty;
-            await ioTHubManager.SendTextToIoTHubDevice("login");
+            await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
             hasBeenStarted = false;
+        }
+        
+        internal async Task ButtonDoneExercising_Clicked()
+        {
+            if (timer != null) timer.Stop();
+            LabelText = "Done exercise...";
+            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+            JWTHttpClient.ResetUserInfoToTablet();
+            App.User.DeviceData.Weight = 0;
+            Thread.Sleep(3000);
+            LabelText = "Please choose your weight.";
+            LabelWeight = "0 kg";
+            weightAsString = string.Empty;
+            hasBeenStarted = false;
+            Application.Current.MainPage = new MainPage();
         }
 
         public void InitCounterTimer()

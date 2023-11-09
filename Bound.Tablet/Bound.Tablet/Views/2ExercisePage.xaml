@@ -68,7 +68,7 @@
             <Button Text="9" Grid.Row="2" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
 
             <Button Text="CE" Grid.Row="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
-            <Button Text="" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" />
+            <Button Text="Done" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonDoneExercising_Clicked"/>
             <Button Text="0" Grid.Row="3" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
         </Grid>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">

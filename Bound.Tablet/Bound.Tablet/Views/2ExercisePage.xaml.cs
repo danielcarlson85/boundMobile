@@ -47,7 +47,13 @@ namespace Bound.Tablet.Views
 
         private async void ButtonReset_Clicked(object sender, System.EventArgs e)
         {
-            await viewModel.ButtonReset_Clicked();
+            await viewModel.ButtonResetWeight_Clicked();
+
+        }
+        
+        private async void ButtonDoneExercising_Clicked(object sender, System.EventArgs e)
+        {
+            await viewModel.ButtonDoneExercising_Clicked();
 
         }
 
