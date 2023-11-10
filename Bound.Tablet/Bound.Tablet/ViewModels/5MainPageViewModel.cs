@@ -41,13 +41,10 @@ namespace Bound.Tablet.ViewModels
             CrossNFC.Current.StopListening();
         }
 
-        int total =0;
         static string machineNameFromTag = String.Empty;
 
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
-            total++;
-            Debug.WriteLine(total);
 
             try
             {
@@ -64,7 +61,6 @@ namespace Bound.Tablet.ViewModels
                         await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
                         Thread.Sleep(1000);
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
-
 
                         JWTHttpClient.SendUserInfoToTablet();
                         Application.Current.MainPage = new ExercisePage();

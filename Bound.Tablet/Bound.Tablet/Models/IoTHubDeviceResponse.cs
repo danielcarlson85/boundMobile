@@ -10,8 +10,6 @@ namespace Bound.Tablet.Models
 
         public string DeviceName { get; set; }
 
-        public string Value { get; set; }
-
         public string ConnectionString { get; set; }
     }
 }

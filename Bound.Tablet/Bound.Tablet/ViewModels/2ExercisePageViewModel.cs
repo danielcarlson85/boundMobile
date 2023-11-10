@@ -37,8 +37,6 @@ namespace Bound.Tablet.ViewModels
             InitCounterTimer();
         }
 
-
-
         public void InitStatusTask()
         {
             Task.Run(async () =>
