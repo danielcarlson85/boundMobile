@@ -17,11 +17,14 @@ namespace Bound.Tablet.ViewModels
         bool _eventsAlreadySubscribed = false;
         private IoTHubManager ioTHubManager;
         public const string MIME_TYPE = "application/com.companyname.Bound.NFC";
+        public string BaseText = "Put your mobile phone on the NFC tag that you can find on the machine.";
+
 
         public MainPageViewModel()
         {
-            ioTHubManager = new IoTHubManager();
+            MainPageTextLabel = BaseText;
 
+            ioTHubManager = new IoTHubManager();
         }
 
         public void StartListeningForNFC()
@@ -52,7 +55,7 @@ namespace Bound.Tablet.ViewModels
                 {
                     App.IsOn = true;
                     machineNameFromTag = tagInfo.Records.First().Message;
-
+                    InitUITimer($"Connecting to device {machineNameFromTag}...", 5);
                     App.User.DeviceData.MachineName = machineNameFromTag;
                     var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
                     if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
@@ -69,18 +72,36 @@ namespace Bound.Tablet.ViewModels
                     else
                     {
                         Debug.WriteLine("This device is not online");
-                        await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
+                        InitUITimer("This device is not online, connecting...", 5);
                     }
                 }
 
                 App.IsOn = false;
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("This machine is not online, try again.", "Machine not online", "OK");
+                InitUITimer($"Something happend, cannot connect to device, {ex.Message}", 5);
             }
         }
+
+        private void InitUITimer(string text, int time)
+        {
+            MainPageTextLabel = text;
+
+            System.Timers.Timer timer = new System.Timers.Timer(time*1000);
+            timer.Start();
+            timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        MainPageTextLabel = BaseText;
+                    });
+                    timer.Stop();
+                };
+        }
+
+
 
         public void ImageButtonContinue_Clicked()
         {

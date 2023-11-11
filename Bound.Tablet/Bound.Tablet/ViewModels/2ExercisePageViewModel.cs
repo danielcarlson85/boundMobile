@@ -155,14 +155,14 @@ namespace Bound.Tablet.ViewModels
 
 
 
-        public async void ButtonAddWeight_Clicked(string weightToAdd)
+        public void ButtonAddWeight_Clicked(string weightToAdd)
         {
             CommonMethods.Vibrate();
             timer.Stop();
 
             if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
             {
-                await Application.Current.MainPage.DisplayAlert("This machine is not online ", "Machine not online", "OK");
+                LabelText = "This machine is not online yes started, wait...";
                 timer.Stop();
                 return;
             }
@@ -171,7 +171,7 @@ namespace Bound.Tablet.ViewModels
             {
                 App.User.DeviceData.Weight = 0;
                 weightAsString = string.Empty;
-                LabelWeight = "Device is already running";
+                LabelText = "Device is already running";
                 Debug.WriteLine("Device is already running");
                 return;
             }

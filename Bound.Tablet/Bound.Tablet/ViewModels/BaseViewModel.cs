@@ -14,6 +14,13 @@ namespace Bound.Tablet.ViewModels
             set { SetProperty(ref isBusy, value); }
         }
 
+        string mainPageTextLabel;
+        public string MainPageTextLabel
+        {
+            get { return mainPageTextLabel; }
+            set { SetProperty(ref mainPageTextLabel, value); }
+        }
+        
         string email;
         public string Email
         {

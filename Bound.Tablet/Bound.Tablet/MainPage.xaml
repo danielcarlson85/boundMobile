@@ -2,25 +2,32 @@
 <ContentPage x:Class="Bound.NFC.MainPage"
              xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Bound.NFC"
+             xmlns:viewModels="clr-namespace:Bound.Tablet.ViewModels;assembly=Bound.Tablet"
              x:Name="thisPage"
              Title="Plugin NFC Sample"
-             BindingContext="{x:Reference thisPage}"
              BackgroundImageSource="Bound1.png">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainPageViewModel />
+    </ContentPage.BindingContext>
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <Label FontSize="20" Grid.Row="1" 
-           Text="Put your mobile phone on the NFC tag that you can find on the machine." 
+        
+        <Label FontSize="16" Grid.Row="2" 
+           Text="{Binding MainPageTextLabel}" 
            TextColor="GreenYellow" 
            HorizontalTextAlignment="Center"/>
 
-        <StackLayout Orientation="Horizontal" Grid.Row="2" HorizontalOptions="CenterAndExpand">
+        <StackLayout Orientation="Horizontal" Grid.Row="4" HorizontalOptions="CenterAndExpand">
 
             <Button  Clicked="ImageButtonHeatmap_Clicked" BackgroundColor="Black" Opacity="0.5" Text="Heat map" TextColor="Wheat"/>
             <Button  Clicked="ImageButtonNFCSettings_Clicked" BackgroundColor="Black" Opacity="0.5" Text="NFC Settings" TextColor="Wheat"/>
