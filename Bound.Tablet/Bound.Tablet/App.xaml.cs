@@ -2,6 +2,7 @@
 using Bound.Tablet.Models;
 using Bound.Tablet.Views;
 using System.Diagnostics;
+using System.Timers;
 using Xamarin.Forms;
 
 namespace Bound.NFC
@@ -15,6 +16,7 @@ namespace Bound.NFC
         public static bool IsOn { get; internal set; }
         public static int UpTime = 0;
 
+        public Timer timer = new Timer(1000);
 
         public App()
         {
@@ -34,14 +36,13 @@ namespace Bound.NFC
 
         private void InitStartUpTimeTimer()
         {
-            var timer = new System.Timers.Timer(1000);
             timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     UpTime++;
 
-                    if (UpTime > 60)
+                    if (UpTime > 300)
                     {
                         Current.MainPage = new MainPage();
                         UpTime = 0;
@@ -56,16 +57,22 @@ namespace Bound.NFC
 
         protected override void OnStart()
         {
+            timer.Start();
             // Handle when your app starts
         }
 
         protected override void OnSleep()
         {
+            Debug.WriteLine("Sleep mode");
+            timer.Stop();
             // Handle when your app sleeps
         }
 
         protected override void OnResume()
         {
+            UpTime = 0;
+            Debug.WriteLine("On resume");
+            timer.Start();
             // Handle when your app resumes
         }
     }
