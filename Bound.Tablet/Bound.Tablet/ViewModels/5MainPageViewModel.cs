@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Bound.NFC;
+using Bound.Tablet.Helpers;
 using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
@@ -63,6 +64,8 @@ namespace Bound.Tablet.ViewModels
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
 
                         JWTHttpClient.SendUserInfoToTablet();
+                        CacheHelpers.SaveCachedUser();
+
                         Application.Current.MainPage = new ExercisePage();
                     }
                     else

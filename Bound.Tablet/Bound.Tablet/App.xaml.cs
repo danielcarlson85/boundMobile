@@ -1,7 +1,6 @@
-﻿using Bound.Tablet.Models;
+﻿using Bound.Tablet.Helpers;
+using Bound.Tablet.Models;
 using Bound.Tablet.Views;
-using Newtonsoft.Json;
-using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace Bound.NFC
@@ -18,7 +17,7 @@ namespace Bound.NFC
         {
             InitializeComponent();
 
-            if (GetCachedUser())
+            if (CacheHelpers.GetCachedUserForLogin())
             {
                 MainPage = new MainPage();
             }
@@ -29,30 +28,6 @@ namespace Bound.NFC
         }
 
 
-        private bool GetCachedUser()
-        {
-            Debug.WriteLine("Authentication started");
-
-            var savedUser = Xamarin.Essentials.Preferences.Get("user", "");
-            var savedTokens = Xamarin.Essentials.Preferences.Get("tokens", "");
-
-            if (!string.IsNullOrEmpty(savedUser) && !string.IsNullOrEmpty(savedTokens))
-            {
-                User = JsonConvert.DeserializeObject<User>(savedUser);
-                User.Tokens = JsonConvert.DeserializeObject<Tokens>(savedTokens);
-
-                User.DeviceData = new DeviceData()
-                {
-                    ObjectId = User.ObjectId
-                };
-
-                Debug.WriteLine("User found on device");
-
-                return true;
-            }
-
-            return false;
-        }
 
         protected override void OnStart()
         {

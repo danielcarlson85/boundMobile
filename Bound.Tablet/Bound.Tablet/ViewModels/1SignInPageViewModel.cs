@@ -1,7 +1,7 @@
-﻿using Bound.Tablet.Models;
+﻿using Bound.NFC;
+using Bound.Tablet.Helpers;
+using Bound.Tablet.Models;
 using Bound.Tablet.Services;
-using Newtonsoft.Json;
-using Bound.NFC;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -35,7 +35,7 @@ namespace Bound.Tablet.ViewModels
             await Application.Current.MainPage.DisplayAlert("Welcome ", AuthenticationResult.FirstName, "OK");
 
             CreateObjects(AuthenticationResult);
-            SaveCachedUser();
+            CacheHelpers.SaveCachedUser();
 
             Debug.WriteLine("Authentication finnished");
             Debug.WriteLine("User is saved on device");
@@ -45,14 +45,7 @@ namespace Bound.Tablet.ViewModels
             IsBusy = false;
         }
 
-        private static void SaveCachedUser()
-        {
-            var userAsJSON = JsonConvert.SerializeObject(App.User);
-            var tokensAsJSON = JsonConvert.SerializeObject(App.User.Tokens);
 
-            Xamarin.Essentials.Preferences.Set("user", userAsJSON);
-            Xamarin.Essentials.Preferences.Set("tokens", tokensAsJSON);
-        }
 
         private static void CreateObjects(Dots.Authentication.CleanADUserResponse AuthenticationResult)
         {

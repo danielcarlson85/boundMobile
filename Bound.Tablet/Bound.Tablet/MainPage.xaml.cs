@@ -1,4 +1,5 @@
 ﻿using Bound.Tablet;
+using Bound.Tablet.Helpers;
 using Bound.Tablet.ViewModels;
 using Bound.Tablet.Views;
 using Xamarin.Forms;
@@ -18,7 +19,6 @@ namespace Bound.NFC
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            
             viewModel.StartListeningForNFC();
         }
 
