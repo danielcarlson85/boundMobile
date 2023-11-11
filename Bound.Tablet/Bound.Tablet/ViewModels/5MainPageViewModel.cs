@@ -46,10 +46,10 @@ namespace Bound.Tablet.ViewModels
 
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
+            App.UpTime = 0;
 
             try
             {
-                //if (!App.IsOn && string.IsNullOrEmpty(machineNameFromTag))
                 if (!App.IsOn)
                 {
                     App.IsOn = true;

@@ -42,6 +42,19 @@ namespace Bound.Tablet.Droid
             CreateNotificationFromIntent(Intent);
 
         }
+
+
+        public void RestartApp()
+        {
+            var intent = new Intent(this, typeof(MainActivity));
+            intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(intent);
+
+            // Finish the current activity
+            Finish();
+        }
+
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

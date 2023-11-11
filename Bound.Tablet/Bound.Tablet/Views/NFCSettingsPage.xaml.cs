@@ -14,6 +14,7 @@ namespace Bound.Tablet.Views
 
         public NFCSettingsPage()
         {
+            App.UpTime = 0;
             InitializeComponent();
         }
 

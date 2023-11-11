@@ -1,4 +1,5 @@
-﻿using Bound.Tablet.ViewModels;
+﻿using Bound.NFC;
+using Bound.Tablet.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,6 +14,7 @@ namespace Bound.Tablet.Views
 
         public SignInPage()
         {
+            App.UpTime = 0;
             InitializeComponent();
             viewModel = new SignInPageViewModel();
         }

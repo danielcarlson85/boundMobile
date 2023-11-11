@@ -1,7 +1,6 @@
 ﻿using Bound.NFC;
 using Bound.Tablet.Models;
 using Bound.Tablet.Services;
-using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
 using System.Diagnostics;
@@ -66,6 +65,7 @@ namespace Bound.Tablet.ViewModels
 
         internal async void RestartRPI_Clicked()
         {
+            CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartRPI");
             JWTHttpClient.ResetUserInfoToTablet();
             Application.Current.MainPage = new MainPage();
@@ -73,6 +73,7 @@ namespace Bound.Tablet.ViewModels
 
         internal async void ShutdownRPI_Clicked()
         {
+            CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("shutdownRPI");
             JWTHttpClient.ResetUserInfoToTablet();
             Application.Current.MainPage = new MainPage();
@@ -81,6 +82,7 @@ namespace Bound.Tablet.ViewModels
 
         internal async void ButtonRestartDevice_Clicked()
         {
+            CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet();
             Application.Current.MainPage = new MainPage();
@@ -88,6 +90,7 @@ namespace Bound.Tablet.ViewModels
 
         internal async Task ButtonResetWeight_Clicked()
         {
+            CommonMethods.Vibrate();
             if (timer != null) timer.Stop();
             LabelText = "Resetting weight on machine, please wait...";
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
@@ -100,7 +103,7 @@ namespace Bound.Tablet.ViewModels
             await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
             hasBeenStarted = false;
         }
-        
+
         internal async Task ButtonDoneExercising_Clicked()
         {
             if (timer != null) timer.Stop();
@@ -154,6 +157,7 @@ namespace Bound.Tablet.ViewModels
 
         public async void ButtonAddWeight_Clicked(string weightToAdd)
         {
+            CommonMethods.Vibrate();
             timer.Stop();
 
             if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
@@ -172,7 +176,6 @@ namespace Bound.Tablet.ViewModels
                 return;
             }
 
-            CommonMethods.Vibrate();
             if (weightToAdd != "CE")
             {
                 weightAsString += weightToAdd;

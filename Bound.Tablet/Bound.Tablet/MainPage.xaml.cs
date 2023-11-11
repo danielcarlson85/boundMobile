@@ -1,5 +1,4 @@
 ﻿using Bound.Tablet;
-using Bound.Tablet.Helpers;
 using Bound.Tablet.ViewModels;
 using Bound.Tablet.Views;
 using Xamarin.Forms;
@@ -12,6 +11,7 @@ namespace Bound.NFC
 
         public MainPage()
         {
+            App.UpTime = 0;
             InitializeComponent();
             BindingContext = viewModel = new MainPageViewModel();
         }
@@ -48,7 +48,7 @@ namespace Bound.NFC
         private void ButtonRestartDevice_Clicked(object sender, System.EventArgs e)
         {
         }
-        
+
         private void ButtonShutdownRPI_Clicked(object sender, System.EventArgs e)
         {
         }

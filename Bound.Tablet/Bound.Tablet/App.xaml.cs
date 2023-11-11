@@ -1,6 +1,7 @@
 ﻿using Bound.Tablet.Helpers;
 using Bound.Tablet.Models;
 using Bound.Tablet.Views;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace Bound.NFC
@@ -12,10 +13,13 @@ namespace Bound.NFC
         public static User User = new User();
 
         public static bool IsOn { get; internal set; }
+        public static int UpTime = 0;
+
 
         public App()
         {
             InitializeComponent();
+            InitStartUpTimeTimer();
 
             if (CacheHelpers.GetCachedUserForLogin())
             {
@@ -28,6 +32,27 @@ namespace Bound.NFC
         }
 
 
+        private void InitStartUpTimeTimer()
+        {
+            var timer = new System.Timers.Timer(1000);
+            timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UpTime++;
+
+                    if (UpTime > 60)
+                    {
+                        Current.MainPage = new MainPage();
+                        UpTime = 0;
+                    }
+
+                    Debug.WriteLine(UpTime);
+                });
+            };
+
+            timer.Start();
+        }
 
         protected override void OnStart()
         {

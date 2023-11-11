@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Bound.NFC;
 using Xamarin.Essentials;
 
 namespace Bound.Tablet
@@ -9,6 +7,7 @@ namespace Bound.Tablet
     {
         public static void Vibrate()
         {
+            App.UpTime = 0;
             Vibration.Vibrate(20);
         }
     }
