@@ -14,6 +14,7 @@ namespace Bound.Tablet.Views
 
         public ExercisePage()
         {
+            App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
             BindingContext = viewModel = new ExercisePageViewModel();

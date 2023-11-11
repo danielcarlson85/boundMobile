@@ -12,6 +12,7 @@ namespace Bound.Tablet.Views
     {
         public HeatMapPage()
         {
+            App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
             BindingContext = new HeatMapPageViewModel();

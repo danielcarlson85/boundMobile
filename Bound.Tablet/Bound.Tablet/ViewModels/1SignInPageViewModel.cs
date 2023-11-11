@@ -32,7 +32,7 @@ namespace Bound.Tablet.ViewModels
             }
 
             var AuthenticationResult = await _authenticationService.AuthenticationAsync(Email, Password);
-            await Application.Current.MainPage.DisplayAlert("Welcome ", AuthenticationResult.FirstName, "OK");
+            await Application.Current.MainPage.DisplayAlert("Welcome ", AuthenticationResult.Email, "OK");
 
             CreateObjects(AuthenticationResult);
             CacheHelpers.SaveCachedUser();

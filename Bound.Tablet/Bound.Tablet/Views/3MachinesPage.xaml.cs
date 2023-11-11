@@ -14,6 +14,7 @@ namespace Bound.Tablet.Views
 
         public MachinesPage()
         {
+            App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
 

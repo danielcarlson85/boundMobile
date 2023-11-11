@@ -1,5 +1,4 @@
-﻿using Bound.Tablet.Views;
-using Bound.NFC;
+﻿using Bound.NFC;
 using Plugin.NFC;
 using System.Linq;
 using Xamarin.Forms;
@@ -14,6 +13,7 @@ namespace Bound.Tablet.Views
 
         public NFCSettingsPage()
         {
+            App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
         }

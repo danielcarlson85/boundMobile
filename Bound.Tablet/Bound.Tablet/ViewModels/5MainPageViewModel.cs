@@ -1,5 +1,4 @@
-﻿using Android.Content;
-using Bound.NFC;
+﻿using Bound.NFC;
 using Bound.Tablet.Helpers;
 using Bound.Tablet.Services;
 using Bound.Tablet.Views;
@@ -37,7 +36,6 @@ namespace Bound.Tablet.ViewModels
 
         public void OnBackButtonPressed()
         {
-
             CrossNFC.Current.OnMessageReceived -= Current_OnMessageReceived;
             CrossNFC.Current.StopListening();
         }

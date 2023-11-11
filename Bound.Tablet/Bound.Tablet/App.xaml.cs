@@ -11,8 +11,9 @@ namespace Bound.NFC
     {
         public static string IoTHubConnectionString = "HostName=boundiothub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=R9Vrz6beac9GeyTqYtL+e9YqklvZ4GPpRPmGejPzkdA=";
 
-        public static User User = new User();
+        public static User User;
 
+        public static Page CurrentPage;
         public static bool IsOn { get; internal set; }
         public static int UpTime = 0;
 
@@ -23,14 +24,22 @@ namespace Bound.NFC
             InitializeComponent();
             InitStartUpTimeTimer();
 
-            if (CacheHelpers.GetCachedUserForLogin())
+            if (User == null)
             {
-                MainPage = new MainPage();
+                if (CacheHelpers.GetCachedUserForLogin())
+                {
+                    MainPage = new MainPage();
+                }
+                else
+                {
+                    MainPage = new SignInPage();
+                }
             }
             else
             {
-                MainPage = new SignInPage();
+                MainPage = CurrentPage;
             }
+
         }
 
 
@@ -63,17 +72,19 @@ namespace Bound.NFC
 
         protected override void OnSleep()
         {
+            // Handle when your app sleeps
             Debug.WriteLine("Sleep mode");
             timer.Stop();
-            // Handle when your app sleeps
+            CurrentPage = MainPage;
         }
 
         protected override void OnResume()
         {
+            // Handle when your app resumes
             UpTime = 0;
             Debug.WriteLine("On resume");
+            MainPage = CurrentPage;
             timer.Start();
-            // Handle when your app resumes
         }
     }
 }

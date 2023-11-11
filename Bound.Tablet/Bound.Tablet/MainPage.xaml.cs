@@ -11,6 +11,7 @@ namespace Bound.NFC
 
         public MainPage()
         {
+            App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
             BindingContext = viewModel = new MainPageViewModel();
@@ -22,11 +23,11 @@ namespace Bound.NFC
             viewModel.StartListeningForNFC();
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            viewModel.OnBackButtonPressed();
-            return base.OnBackButtonPressed();
-        }
+        //protected override bool OnBackButtonPressed()
+        //{
+        //    viewModel.OnBackButtonPressed();
+        //    return base.OnBackButtonPressed();
+        //}
 
         private void ImageButtonContinue_Clicked(object sender, System.EventArgs e)
         {
