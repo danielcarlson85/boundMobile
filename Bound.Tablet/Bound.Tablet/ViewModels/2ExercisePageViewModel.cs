@@ -53,11 +53,13 @@ namespace Bound.Tablet.ViewModels
                     if (device.AzureIoTHubDevice.ConnectionState == DeviceConnectionState.Connected)
                     {
                         LabelDeviceStatus = Color.GreenYellow;
+                        LabelText = "Machine ready, please choose your weight...";
                     }
                     else
                     {
                         LabelDeviceStatus = Color.Red;
                         LabelDeviceIsRunning = Color.Red;
+                        LabelText = "Waiting for machine to be ready...";
                     }
                     await Task.Delay(1000);
                 }
@@ -93,12 +95,11 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             if (timer != null) timer.Stop();
-            LabelText = "Resetting weight on machine, please wait...";
+            LabelWeight = "Resetting weight on machine, please wait...";
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet();
             App.User.DeviceData.Weight = 0;
             Thread.Sleep(3000);
-            LabelText = "Please choose your weight.";
             LabelWeight = "0 kg";
             weightAsString = string.Empty;
             await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
@@ -113,7 +114,7 @@ namespace Bound.Tablet.ViewModels
                 time--;
                 Debug.WriteLine(time);
 
-                LabelText = "Starting device in: " + time;
+                LabelWeight = "Starting device in: " + time;
 
                 if (time <= 0)
                 {
@@ -124,16 +125,15 @@ namespace Bound.Tablet.ViewModels
 
                     if (device == null)
                     {
-                        LabelText = "This machine is not yet registred, please use another one.";
+                        LabelWeight = "This machine is not yet registred, please use another one.";
                         return;
                     }
 
-                    LabelText = "Device started...";
-
                     App.User.Device = device;
-                    JWTHttpClient.SendUserInfoToTablet();
                     hasBeenStarted = true;
                     await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
+                    JWTHttpClient.SendUserInfoToTablet();
+                    JWTHttpClient.SendDebugTextToTablet("User added weight and workout started.");
 
 
                     Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -142,10 +142,6 @@ namespace Bound.Tablet.ViewModels
                         // For example, updating a label text
                         Application.Current.MainPage = new DonePage();
                     });
-
-
-
-
                 }
             };
         }
@@ -159,7 +155,6 @@ namespace Bound.Tablet.ViewModels
 
             if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
             {
-                LabelText = "This machine is not online yes started, wait...";
                 timer.Stop();
                 return;
             }
