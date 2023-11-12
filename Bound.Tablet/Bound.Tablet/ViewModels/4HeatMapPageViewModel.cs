@@ -1,4 +1,6 @@
-﻿namespace Bound.Tablet.ViewModels
+﻿using Bound.Tablet.Services;
+
+namespace Bound.Tablet.ViewModels
 {
     public class HeatMapPageViewModel : BaseViewModel
     {

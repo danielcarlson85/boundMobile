@@ -1,4 +1,5 @@
 ﻿using Bound.NFC;
+using Bound.Tablet.Services;
 using Bound.Tablet.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
@@ -14,6 +15,8 @@ namespace Bound.Tablet.Views
 
         public SignInPage()
         {
+            JWTHttpClient.SendDebugTextToTablet("Showing SignInPage...");
+
             App.UpTime = 0;
             InitializeComponent();
             viewModel = new SignInPageViewModel();

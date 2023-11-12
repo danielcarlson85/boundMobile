@@ -2,6 +2,7 @@
 using Bound.NFC;
 using System.Diagnostics;
 using Xamarin.Forms;
+using Bound.Tablet.Services;
 
 namespace Bound.Tablet.ViewModels
 {

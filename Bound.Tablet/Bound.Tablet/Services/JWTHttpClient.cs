@@ -35,12 +35,20 @@ namespace Bound.Tablet.Services
 
         public static void SendUserInfoToTablet()
         {
-            var httpClient = new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email  + "&machinename=" + App.User.DeviceData.MachineName + "&weight=" + App.User.DeviceData.Weight + "&status=online&reps=0" );
+            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=" + App.User.DeviceData.Weight + "&status=online&reps=0");
         }
-        
+
+
+
+
+        public static void SendDebugTextToTablet(string debugText)
+        {
+            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=" + App.User.DeviceData.Weight + "&status=online&reps=0" + "&DebugText=" + debugText);
+        }
+
         public static void ResetUserInfoToTablet()
         {
-            var httpClient = new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=0" + "&status=offline&reps=0");
+            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=0" + "&status=offline&reps=0");
         }
     }
 }

@@ -3,6 +3,7 @@ using Bound.NFC;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Bound.Tablet.Services;
 
 namespace Bound.Tablet.Views
 {
@@ -14,6 +15,9 @@ namespace Bound.Tablet.Views
 
         public MachinesPage()
         {
+
+            JWTHttpClient.SendDebugTextToTablet("Showing MachinesPage...");
+
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();

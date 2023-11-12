@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bound.Tablet.ViewModels;assembly=Bound.Tablet"
+             x:Class="Bound.Tablet.Views.DonePage" BackgroundColor="#333333" BackgroundImageSource="Bound1.png">
+
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label  Grid.Row="1" Text="Press when finished" TextColor="Red" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Center"/>
+        <Button ImageSource="Resources/icon.png" Grid.Row="1" x:Name="buttonDone" />
+    </Grid>-->
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ImageButton Grid.Row="1" HeightRequest="100" WidthRequest="300"  Margin="0,50,0,0" BackgroundColor="#333333" CornerRadius="90" BorderWidth="2" BorderColor="Gray"
+                     Source="Resources/icon.png" VerticalOptions="Center" HorizontalOptions="Center"  x:Name="buttonDone"  Clicked="buttonDone_Clicked" />
+
+        <Label Grid.Row="1" Text="Press the button below when you are finished with this machine." WidthRequest="280"
+               HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" TextColor="GreenYellow" FontAttributes="Bold" FontSize="16" HorizontalTextAlignment="Center" Margin="0,-20"/>
+    </Grid>
+
+
+
+
+
+</ContentPage>

@@ -51,7 +51,7 @@ namespace Bound.NFC
                 {
                     UpTime++;
 
-                    if (UpTime > 300)
+                    if (UpTime > 3000)
                     {
                         Current.MainPage = new MainPage();
                         UpTime = 0;

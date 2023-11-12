@@ -4,6 +4,7 @@
 
 using Bound.NFC;
 using Bound.Tablet.Models;
+using Bound.Tablet.Services;
 using Bound.Tablet.Settings;
 using Devicemanager.API.Interfaces;
 using Microsoft.Azure.Devices;

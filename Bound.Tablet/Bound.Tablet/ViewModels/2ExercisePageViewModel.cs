@@ -1,6 +1,7 @@
 ﻿using Bound.NFC;
 using Bound.Tablet.Models;
 using Bound.Tablet.Services;
+using Bound.Tablet.Views;
 using Devicemanager.API.Managers;
 using Microsoft.Azure.Devices;
 using System.Diagnostics;
@@ -14,10 +15,10 @@ namespace Bound.Tablet.ViewModels
     {
         readonly IoTHubManager ioTHubManager;
         IoTHubDevice device;
-        System.Timers.Timer timer;
+        public static System.Timers.Timer timer;
         int time = 5;
-        string weightAsString = string.Empty;
-        bool hasBeenStarted = false;
+        public static string weightAsString = string.Empty;
+        public static bool hasBeenStarted = false;
 
 
         public ExercisePageViewModel()
@@ -104,21 +105,6 @@ namespace Bound.Tablet.ViewModels
             hasBeenStarted = false;
         }
 
-        internal async Task ButtonDoneExercising_Clicked()
-        {
-            if (timer != null) timer.Stop();
-            LabelText = "Done exercise...";
-            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet();
-            App.User.DeviceData.Weight = 0;
-            Thread.Sleep(3000);
-            LabelText = "Please choose your weight.";
-            LabelWeight = "0 kg";
-            weightAsString = string.Empty;
-            hasBeenStarted = false;
-            Application.Current.MainPage = new MainPage();
-        }
-
         public void InitCounterTimer()
         {
             timer = new System.Timers.Timer(1000);
@@ -148,6 +134,17 @@ namespace Bound.Tablet.ViewModels
                     JWTHttpClient.SendUserInfoToTablet();
                     hasBeenStarted = true;
                     await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
+
+
+                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    {
+                        // Your UI update code here
+                        // For example, updating a label text
+                        Application.Current.MainPage = new DonePage();
+                    });
+
+
+
 
                 }
             };

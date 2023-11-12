@@ -1,4 +1,5 @@
 ﻿using Bound.NFC;
+using Bound.Tablet.Services;
 using Bound.Tablet.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
@@ -15,6 +16,8 @@ namespace Bound.Tablet.Views
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
+            JWTHttpClient.SendDebugTextToTablet("Showing HeatMapPage...");
+
             BindingContext = new HeatMapPageViewModel();
         }
         protected override bool OnBackButtonPressed()

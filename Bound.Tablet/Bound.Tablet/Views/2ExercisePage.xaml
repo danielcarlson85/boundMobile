@@ -29,11 +29,6 @@
                 <Button WidthRequest ="20" HeightRequest ="20" CornerRadius ="40" VerticalOptions="Center" HorizontalOptions ="Center" BackgroundColor="{Binding LabelDeviceStatus}"/>
             </StackLayout>
 
-            <StackLayout Orientation="Horizontal" Grid.Row="3" VerticalOptions="CenterAndExpand">
-                <Label FontSize="16" Text="Is running: " TextColor="GreenYellow"/>
-
-            </StackLayout>
-
             <Label Grid.Row="4" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelWeight}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
             <Label Grid.Row="5" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelText}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
         </Grid>
@@ -68,7 +63,6 @@
             <Button Text="9" Grid.Row="2" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
 
             <Button Text="CE" Grid.Row="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
-            <Button Text="Done" Grid.Row="3" Grid.Column="1" BackgroundColor="GreenYellow" Clicked="ButtonDoneExercising_Clicked"/>
             <Button Text="0" Grid.Row="3" Grid.Column="2" BackgroundColor="GreenYellow" Clicked="ButtonAddWeight_Clicked"/>
         </Grid>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center">

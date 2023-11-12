@@ -1,4 +1,5 @@
 ﻿using Bound.NFC;
+using Bound.Tablet.Services;
 using Bound.Tablet.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
@@ -14,6 +15,7 @@ namespace Bound.Tablet.Views
 
         public ExercisePage()
         {
+            JWTHttpClient.SendDebugTextToTablet("Showing ExercisePage...");
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
@@ -55,7 +57,6 @@ namespace Bound.Tablet.Views
         
         private async void ButtonDoneExercising_Clicked(object sender, System.EventArgs e)
         {
-            await viewModel.ButtonDoneExercising_Clicked();
 
         }
 
