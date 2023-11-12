@@ -38,20 +38,41 @@ namespace Bound.Tablet.Views
         private async void buttonDone_Clicked(object sender, System.EventArgs e)
         {
             App.UpTime = 0;
+            CommonMethods.Vibrate();
 
             var ioTHubManager = new IoTHubManager();
 
             if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
             
-            JWTHttpClient.SendDebugTextToTablet("User done exercising... restarting device");
+            JWTHttpClient.SendDebugTextToTablet("User done with workout...resetting machine");
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet();
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
             ExercisePageViewModel.hasBeenStarted = false;
 
-            Application.Current.MainPage = new ExercisePage();
+            Application.Current.MainPage = new MainPage();
 
+        }
+        
+        private async void buttonChangeWeight_Clicked(object sender, System.EventArgs e)
+        {
+            App.UpTime = 0;
+            CommonMethods.Vibrate();
+
+            var ioTHubManager = new IoTHubManager();
+
+            if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
+
+            JWTHttpClient.SendDebugTextToTablet("User chaning weight...");
+            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+            JWTHttpClient.ResetUserInfoToTablet();
+            App.User.DeviceData.Weight = 0;
+            ExercisePageViewModel.weightAsString = string.Empty;
+            ExercisePageViewModel.hasBeenStarted = false;
+            await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
+
+            Application.Current.MainPage = new ExercisePage();
         }
     }
 }
