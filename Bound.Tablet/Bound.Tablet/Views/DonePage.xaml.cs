@@ -45,7 +45,7 @@ namespace Bound.Tablet.Views
             if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
             
             JWTHttpClient.SendDebugTextToTablet("User done with workout...resetting machine");
-            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+            await ioTHubManager.SendTextToIoTHubDevice("saveData");
             JWTHttpClient.ResetUserInfoToTablet();
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
