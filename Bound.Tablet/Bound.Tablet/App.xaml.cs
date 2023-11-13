@@ -24,7 +24,7 @@ namespace Bound.NFC
         {
             InitializeComponent();
             InitStartUpTimeTimer();
-            JWTHttpClient.SendDebugTextToTablet("StartListening for NFC started...");
+            JWTHttpClient.SendDebugTextToTablet("[App] StartListening for NFC started...");
 
 
             if (User == null)

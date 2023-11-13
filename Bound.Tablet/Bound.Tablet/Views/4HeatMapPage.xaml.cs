@@ -16,7 +16,7 @@ namespace Bound.Tablet.Views
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
-            JWTHttpClient.SendDebugTextToTablet("Showing HeatMapPage...");
+            JWTHttpClient.SendDebugTextToTablet("[MachinesPage] Showing HeatMapPage...");
 
             BindingContext = new HeatMapPageViewModel();
         }

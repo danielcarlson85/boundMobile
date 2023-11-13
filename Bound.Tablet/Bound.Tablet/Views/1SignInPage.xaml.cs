@@ -15,7 +15,7 @@ namespace Bound.Tablet.Views
 
         public SignInPage()
         {
-            JWTHttpClient.SendDebugTextToTablet("Showing SignInPage...");
+            JWTHttpClient.SendDebugTextToTablet("[SignInPage] Showing SignInPage...");
 
             App.UpTime = 0;
             InitializeComponent();

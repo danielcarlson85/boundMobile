@@ -133,7 +133,7 @@ namespace Bound.Tablet.ViewModels
                     hasBeenStarted = true;
                     await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
                     JWTHttpClient.SendUserInfoToTablet();
-                    JWTHttpClient.SendDebugTextToTablet("User added weight and workout started.");
+                    JWTHttpClient.SendDebugTextToTablet("[InitCounterTimer] User added weight and workout started.");
 
 
                     Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
@@ -151,7 +151,7 @@ namespace Bound.Tablet.ViewModels
         public void ButtonAddWeight_Clicked(string weightToAdd)
         {
             CommonMethods.Vibrate();
-            JWTHttpClient.SendDebugTextToTablet("Button AddWeight_clicked");
+            JWTHttpClient.SendDebugTextToTablet("[ButtonAddWeight_Clicked] Button AddWeight_clicked: " + weightToAdd);
             timer.Stop();
 
             if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)

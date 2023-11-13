@@ -61,8 +61,12 @@ namespace Bound.Tablet.ViewModels
                     if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
                     {
                         await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] restartDevice sent to device.");
+
                         Thread.Sleep(1000);
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
+                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] SendLoginTextToIoTHubDevice sent to device.");
+
                         //JWTHttpClient.SendUserInfoToTablet();
                         CacheHelpers.SaveCachedUser();
 

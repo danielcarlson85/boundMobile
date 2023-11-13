@@ -14,7 +14,7 @@ namespace Bound.Tablet.Views
     {
         public DonePage()
         {
-            JWTHttpClient.SendDebugTextToTablet("Showing DonePage...");
+            JWTHttpClient.SendDebugTextToTablet("[DonePage] Showing DonePage...");
 
             App.CurrentPage = this;
             App.UpTime = 0;

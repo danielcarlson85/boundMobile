@@ -16,7 +16,7 @@ namespace Bound.Tablet.Views
         public MachinesPage()
         {
 
-            JWTHttpClient.SendDebugTextToTablet("Showing MachinesPage...");
+            JWTHttpClient.SendDebugTextToTablet("[MachinesPage] Showing MachinesPage...");
 
             App.CurrentPage = this;
             App.UpTime = 0;
