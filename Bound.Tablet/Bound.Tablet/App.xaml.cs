@@ -1,5 +1,6 @@
 ﻿using Bound.Tablet.Helpers;
 using Bound.Tablet.Models;
+using Bound.Tablet.Services;
 using Bound.Tablet.Views;
 using System.Diagnostics;
 using System.Timers;
@@ -23,6 +24,8 @@ namespace Bound.NFC
         {
             InitializeComponent();
             InitStartUpTimeTimer();
+            JWTHttpClient.SendDebugTextToTablet("StartListening for NFC started...");
+
 
             if (User == null)
             {

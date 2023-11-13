@@ -46,7 +46,6 @@ namespace Bound.Tablet.ViewModels
 
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
-            JWTHttpClient.SendDebugTextToTablet("StartListening for NFC started...");
             App.UpTime = 0;
 
             try
