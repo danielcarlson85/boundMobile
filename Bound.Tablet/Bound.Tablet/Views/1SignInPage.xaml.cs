@@ -15,6 +15,8 @@ namespace Bound.Tablet.Views
 
         public SignInPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+
             JWTHttpClient.SendDebugTextToTablet("[SignInPage] Showing SignInPage...");
 
             App.UpTime = 0;

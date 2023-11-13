@@ -13,10 +13,12 @@ namespace Bound.Tablet.Views
     {
         public HeatMapPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();
-            JWTHttpClient.SendDebugTextToTablet("[MachinesPage] Showing HeatMapPage...");
+            JWTHttpClient.SendDebugTextToTablet("[HeatMapPage] Showing HeatMapPage...");
 
             BindingContext = new HeatMapPageViewModel();
         }

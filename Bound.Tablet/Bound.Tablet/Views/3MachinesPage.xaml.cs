@@ -15,6 +15,7 @@ namespace Bound.Tablet.Views
 
         public MachinesPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
 
             JWTHttpClient.SendDebugTextToTablet("[MachinesPage] Showing MachinesPage...");
 

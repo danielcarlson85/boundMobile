@@ -15,6 +15,8 @@ namespace Bound.Tablet.Views
 
         public ExercisePage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+
             JWTHttpClient.SendDebugTextToTablet("[ExercisePage] Showing ExercisePage...");
             App.CurrentPage = this;
             App.UpTime = 0;

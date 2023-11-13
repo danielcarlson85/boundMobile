@@ -1,4 +1,5 @@
 ﻿using Bound.Tablet;
+using Bound.Tablet.Services;
 using Bound.Tablet.ViewModels;
 using Bound.Tablet.Views;
 using Xamarin.Forms;
@@ -11,6 +12,8 @@ namespace Bound.NFC
 
         public MainPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
+            JWTHttpClient.SendDebugTextToTablet("[MainPage] Showing MainPage...");
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();

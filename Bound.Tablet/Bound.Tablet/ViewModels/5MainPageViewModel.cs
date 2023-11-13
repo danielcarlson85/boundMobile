@@ -46,13 +46,14 @@ namespace Bound.Tablet.ViewModels
 
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
-            JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC recognized logging in user...");
             App.UpTime = 0;
 
             try
             {
                 if (!App.IsOn)
                 {
+                    JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC recognized logging in user...");
+
                     App.IsOn = true;
                     machineNameFromTag = tagInfo.Records.First().Message;
                     InitUITimer($"Connecting to device {machineNameFromTag}...", 5);
@@ -61,11 +62,11 @@ namespace Bound.Tablet.ViewModels
                     if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
                     {
                         await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] restartDevice sent to device.");
+                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'restartDevice' sent to device.");
 
                         Thread.Sleep(1000);
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
-                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] SendLoginTextToIoTHubDevice sent to device.");
+                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'login text' sent to device.");
 
                         //JWTHttpClient.SendUserInfoToTablet();
                         CacheHelpers.SaveCachedUser();
