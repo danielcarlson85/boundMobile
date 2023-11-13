@@ -70,7 +70,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartRPI");
-            JWTHttpClient.ResetUserInfoToTablet();
+            JWTHttpClient.ResetUserInfoToTablet("[RestartRPI_Clicked] restartRPI");
             Application.Current.MainPage = new MainPage();
         }
 
@@ -78,7 +78,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("shutdownRPI");
-            JWTHttpClient.ResetUserInfoToTablet();
+            JWTHttpClient.ResetUserInfoToTablet("[ShutdownRPI_Clicked] shutdownRPI");
             Application.Current.MainPage = new MainPage();
 
         }
@@ -87,7 +87,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet();
+            JWTHttpClient.ResetUserInfoToTablet("[ButtonRestartDevice_Clicked] restartDevice");
             Application.Current.MainPage = new MainPage();
         }
 
@@ -97,7 +97,7 @@ namespace Bound.Tablet.ViewModels
             if (timer != null) timer.Stop();
             LabelWeight = "Resetting weight on machine, please wait...";
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet();
+            JWTHttpClient.ResetUserInfoToTablet("[ButtonResetWeight_Clicked] resetting weight");
             App.User.DeviceData.Weight = 0;
             Thread.Sleep(3000);
             LabelWeight = "0 kg";
@@ -151,6 +151,7 @@ namespace Bound.Tablet.ViewModels
         public void ButtonAddWeight_Clicked(string weightToAdd)
         {
             CommonMethods.Vibrate();
+            JWTHttpClient.SendDebugTextToTablet("Button AddWeight_clicked");
             timer.Stop();
 
             if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)

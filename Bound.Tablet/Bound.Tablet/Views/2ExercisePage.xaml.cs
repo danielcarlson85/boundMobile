@@ -15,7 +15,7 @@ namespace Bound.Tablet.Views
 
         public ExercisePage()
         {
-            JWTHttpClient.SendDebugTextToTablet("Showing ExercisePage...");
+            JWTHttpClient.SendDebugTextToTablet("[ExercisePage] Showing ExercisePage...");
             App.CurrentPage = this;
             App.UpTime = 0;
             InitializeComponent();

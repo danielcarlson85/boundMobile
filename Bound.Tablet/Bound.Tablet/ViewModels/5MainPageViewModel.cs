@@ -46,6 +46,7 @@ namespace Bound.Tablet.ViewModels
 
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
+            JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC recognized logging in user...");
             App.UpTime = 0;
 
             try
@@ -62,11 +63,13 @@ namespace Bound.Tablet.ViewModels
                         await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
                         Thread.Sleep(1000);
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
-
-                        JWTHttpClient.SendUserInfoToTablet();
+                        //JWTHttpClient.SendUserInfoToTablet();
                         CacheHelpers.SaveCachedUser();
 
-                        Application.Current.MainPage = new ExercisePage();
+                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC user logged in.");
+
+
+                        Application.Current.MainPage = new NavigationPage(new ExercisePage());
                     }
                     else
                     {
@@ -88,7 +91,7 @@ namespace Bound.Tablet.ViewModels
         {
             MainPageTextLabel = text;
 
-            System.Timers.Timer timer = new System.Timers.Timer(time*1000);
+            System.Timers.Timer timer = new System.Timers.Timer(time * 1000);
             timer.Start();
             timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
                 {

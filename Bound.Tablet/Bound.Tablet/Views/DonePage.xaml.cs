@@ -44,14 +44,14 @@ namespace Bound.Tablet.Views
 
             if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
             
-            JWTHttpClient.SendDebugTextToTablet("User done with workout...resetting machine");
+            JWTHttpClient.SendDebugTextToTablet("[buttonDone_Clicked] User done with workout...resetting machine");
             await ioTHubManager.SendTextToIoTHubDevice("saveData");
-            JWTHttpClient.ResetUserInfoToTablet();
+            JWTHttpClient.ResetUserInfoToTablet("");
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
             ExercisePageViewModel.hasBeenStarted = false;
 
-            Application.Current.MainPage = new MainPage();
+            Application.Current.MainPage = new NavigationPage(new MainPage());
 
         }
         
@@ -64,9 +64,9 @@ namespace Bound.Tablet.Views
 
             if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
 
-            JWTHttpClient.SendDebugTextToTablet("User chaning weight...");
+            JWTHttpClient.SendDebugTextToTablet("[buttonChangeWeight_Clicked] User chaning weight...");
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet();
+            JWTHttpClient.ResetUserInfoToTablet("");
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
             ExercisePageViewModel.hasBeenStarted = false;
