@@ -163,7 +163,7 @@ namespace Bound.Tablet.ViewModels
             if (weightToAdd != "CE")
             {
                 weightAsString += weightToAdd;
-                var weight = long.Parse(weightAsString);
+                var weight = int.Parse(weightAsString);
                 App.User.DeviceData.Weight = weight;
                 time = 5;
                 timer.Start();
