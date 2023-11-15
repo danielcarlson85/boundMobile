@@ -58,6 +58,10 @@ namespace Bound.Tablet.ViewModels
                 Role = AuthenticationResult.Role
             };
 
+            App.User.DeviceData.Email = App.User.Email;
+            App.User.DeviceData.ObjectId=App.User.ObjectId;
+
+
             App.User.Tokens = new Tokens()
             {
                 AccessToken = AuthenticationResult.AccessToken,

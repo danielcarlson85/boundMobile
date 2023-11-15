@@ -160,15 +160,6 @@ namespace Bound.Tablet.ViewModels
                 return;
             }
 
-            if (hasBeenStarted)
-            {
-                App.User.DeviceData.Weight = 0;
-                weightAsString = string.Empty;
-                LabelText = "Device is already running";
-                Debug.WriteLine("Device is already running");
-                return;
-            }
-
             if (weightToAdd != "CE")
             {
                 weightAsString += weightToAdd;

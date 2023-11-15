@@ -3,6 +3,7 @@ using Bound.Tablet.Services;
 using Bound.Tablet.ViewModels;
 using Devicemanager.API.Managers;
 using System.ComponentModel;
+using System.Threading;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -45,7 +46,7 @@ namespace Bound.Tablet.Views
             var ioTHubManager = new IoTHubManager();
 
             if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
-            
+
             JWTHttpClient.SendDebugTextToTablet("[buttonDone_Clicked] User done with workout...resetting machine");
             await ioTHubManager.SendTextToIoTHubDevice("saveData");
             App.User.DeviceData.Weight = 0;
@@ -55,7 +56,7 @@ namespace Bound.Tablet.Views
             Application.Current.MainPage = new NavigationPage(new MainPage());
 
         }
-        
+
         private async void buttonChangeWeight_Clicked(object sender, System.EventArgs e)
         {
             App.UpTime = 0;
@@ -69,6 +70,8 @@ namespace Bound.Tablet.Views
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
             ExercisePageViewModel.hasBeenStarted = false;
+            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
+            Thread.Sleep(1000);
             await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
 
             Application.Current.MainPage = new NavigationPage(new ExercisePage());
