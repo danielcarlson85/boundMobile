@@ -17,7 +17,7 @@ namespace Bound.Tablet.ViewModels
         bool _eventsAlreadySubscribed = false;
         private readonly IoTHubManager ioTHubManager;
         public const string MIME_TYPE = "application/com.companyname.Bound.NFC";
-        public string BaseText = "Put your mobile phone on the NFC tag that you can find on the machine.";
+        public string BaseText = "Put your mobile phone on the NFC tag that you can find on the machine";
 
 
         public MainPageViewModel()
@@ -50,12 +50,12 @@ namespace Bound.Tablet.ViewModels
             machineNameFromTag = tagInfo.Records.First().Message;
             App.User.DeviceData.MachineName = machineNameFromTag;
 
-            MainPageTextLabel = $"Connecting to machine {machineNameFromTag}\nPlease wait...";
+            MainPageTextLabel = $"Connecting to the machine {machineNameFromTag}\nPlease wait...";
             try
             {
                 if (!App.IsOn)
                 {
-                    JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC recognized logging in user...");
+                    await JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC recognized, logging in user...");
 
                     App.IsOn = true;
                     
@@ -63,15 +63,15 @@ namespace Bound.Tablet.ViewModels
                     if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
                     {
                         await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'restartDevice' sent to device.");
+                        await JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'restartDevice' sent to device.");
 
                         Thread.Sleep(1000);
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
-                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'login text' sent to device.");
+                        await JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'login text' sent to device.");
 
                         CacheHelpers.SaveCachedUser();
 
-                        JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC user logged in.");
+                        await JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC user logged in.");
 
 
                         Application.Current.MainPage = new NavigationPage(new ExercisePage());

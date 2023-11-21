@@ -21,7 +21,7 @@ namespace Bound.Tablet.ViewModels
         public ExercisePageViewModel()
         {
             ioTHubManager = new IoTHubManager();
-            LabelText = "Please choose your weight.";
+            LabelText = "Please choose your weight";
             ImageCurrentMachine = App.User.DeviceData.MachineName;
             LabelMachineName = "Current machine: " + App.User.DeviceData.MachineName;
             LabelDeviceStatus = Color.Red;
@@ -34,7 +34,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartRPI");
-            JWTHttpClient.SendDebugTextToTablet("[RestartRPI_Clicked] restartRPI");
+            await JWTHttpClient.SendDebugTextToTablet("[RestartRPI_Clicked] restartRPI");
             Application.Current.MainPage = new MainPage();
         }
 
@@ -42,7 +42,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("shutdownRPI");
-            JWTHttpClient.SendDebugTextToTablet("[ShutdownRPI_Clicked] shutdownRPI");
+            await JWTHttpClient.SendDebugTextToTablet("[ShutdownRPI_Clicked] shutdownRPI");
             Application.Current.MainPage = new MainPage();
 
         }
@@ -51,7 +51,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.SendDebugTextToTablet("[ButtonRestartDevice_Clicked] restartDevice");
+            await JWTHttpClient.SendDebugTextToTablet("[ButtonRestartDevice_Clicked] restartDevice");
             Application.Current.MainPage = new MainPage();
         }
 
@@ -60,17 +60,17 @@ namespace Bound.Tablet.ViewModels
         internal async Task ButtonOK_Clicked()
         {
             CommonMethods.Vibrate();
-            LabelText = "Starting excercise, please wait...";
+            LabelText = "Starting machine, please wait...";
+
+            Thread.Sleep(1); // To make sure the UI updates before the call to start the machine
 
             await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
-
-
-            JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] Starting excercise, please wait...");
+            await JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] Starting machine, please wait...");
             App.User.DeviceData.Weight = 0;
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
 
             hasBeenStarted = true;
-            JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] User added weight and workout started.");
+            await JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] User added weight.");
 
             hasBeenStarted = false;
             Application.Current.MainPage = new DonePage();
@@ -81,7 +81,7 @@ namespace Bound.Tablet.ViewModels
         public async Task ButtonAddWeight_ClickedAsync(string weightToAdd)
         {
             CommonMethods.Vibrate();
-            JWTHttpClient.SendDebugTextToTablet("[ButtonAddWeight_Clicked] Button AddWeight_clicked: " + weightToAdd);
+            await JWTHttpClient.SendDebugTextToTablet("[ButtonAddWeight_Clicked] Button AddWeight_clicked: " + weightToAdd);
             if (App.User.Device == null)
             {
                 App.User.Device = await ioTHubManager.Get(App.User.DeviceData.MachineName);

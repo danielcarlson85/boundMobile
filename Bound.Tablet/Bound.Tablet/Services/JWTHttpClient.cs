@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Bound.NFC;
 using Bound.Tablet.Settings;
 
@@ -33,11 +34,11 @@ namespace Bound.Tablet.Services
             DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
         }
 
-        public static void SendDebugTextToTablet(string debugText)
+        public static async Task SendDebugTextToTablet(string debugText)
         {
             string fromdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User?.Email + "&machinename=" + App.User?.DeviceData.MachineName + "&weight=" + App.User?.DeviceData.Weight + "&status=offline&reps="+ App.User?.DeviceData.TotalReps + "&DebugText=" + fromdate + "_MOBILE:_" + debugText);
+            await new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User?.Email + "&machinename=" + App.User?.DeviceData.MachineName + "&weight=" + App.User?.DeviceData.Weight + "&status=offline&reps="+ App.User?.DeviceData.TotalReps + "&DebugText=" + fromdate + "_MOBILE:_" + debugText);
         }
     }
 }

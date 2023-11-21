@@ -21,6 +21,8 @@ namespace Bound.Tablet.Views
 
             App.CurrentPage = this;
             App.UpTime = 0;
+            //BindingContext = viewModel = new DonePageViewModel();
+
             InitializeComponent();
         }
 
@@ -45,7 +47,7 @@ namespace Bound.Tablet.Views
 
             var ioTHubManager = new IoTHubManager();
 
-            JWTHttpClient.SendDebugTextToTablet("[buttonDone_Clicked] User done with workout...resetting machine");
+            await JWTHttpClient.SendDebugTextToTablet("[buttonDone_Clicked] User done with workout...resetting machine");
             await ioTHubManager.SendTextToIoTHubDevice("saveData");
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
@@ -61,13 +63,13 @@ namespace Bound.Tablet.Views
             CommonMethods.Vibrate();
 
             var ioTHubManager = new IoTHubManager();
-
-            JWTHttpClient.SendDebugTextToTablet("[buttonChangeWeight_Clicked] User chaning weight...");
+            await ioTHubManager.SendTextToIoTHubDevice("saveData");
+            await JWTHttpClient.SendDebugTextToTablet("[buttonChangeWeight_Clicked] User chaning weight...");
             App.User.DeviceData.Weight = 0;
             ExercisePageViewModel.weightAsString = string.Empty;
             ExercisePageViewModel.hasBeenStarted = false;
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
 
             Application.Current.MainPage = new NavigationPage(new ExercisePage());
