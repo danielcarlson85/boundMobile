@@ -12,9 +12,9 @@ namespace Devicemanager.API.Interfaces
 {
     public interface IIoTHubManager
     {
-        Task<IoTHubDevice> Create(string deviceName);
+        Task<IoTHubDevice> Create(string machineName);
 
-        Task<IoTHubDevice> Get(string deviceId);
+        Task<IoTHubDevice> Get(string machineId);
 
         Task<List<IoTHubDevice>> GetAll();
 

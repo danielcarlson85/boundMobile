@@ -38,7 +38,7 @@ namespace Bound.Tablet.ViewModels
             CacheHelpers.SaveCachedUser();
 
             Debug.WriteLine("Authentication finnished");
-            Debug.WriteLine("User is saved on device");
+            Debug.WriteLine("User is saved on mobile");
 
             Application.Current.MainPage = new MainPage();
 

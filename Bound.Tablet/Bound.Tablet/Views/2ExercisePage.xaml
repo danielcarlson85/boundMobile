@@ -25,8 +25,8 @@
             <Label FontSize="16" TextColor="GreenYellow" Text="{Binding LabelMachineName}" Grid.Row="1" />
 
             <!--<StackLayout Orientation="Horizontal" Grid.Row="2" VerticalOptions="CenterAndExpand">
-                <Label FontSize="16" Text="Device connected: " TextColor="GreenYellow"/>
-                <Button WidthRequest ="20" HeightRequest ="20" CornerRadius ="40" VerticalOptions="Center" HorizontalOptions ="Center" BackgroundColor="{Binding LabelDeviceStatus}"/>
+                <Label FontSize="16" Text="Machine connected: " TextColor="GreenYellow"/>
+                <Button WidthRequest ="20" HeightRequest ="20" CornerRadius ="40" VerticalOptions="Center" HorizontalOptions ="Center" BackgroundColor="{Binding LabelMachineStatus}"/>
             </StackLayout>-->
 
             <Label Grid.Row="4" FontSize="16" Margin="0,0,0,0" Text="{Binding LabelText}" TextColor="GreenYellow" HorizontalTextAlignment="Center"/>
@@ -67,7 +67,7 @@
             <Button Text="OK" Grid.Row="4" Grid.ColumnSpan="3" Grid.Column="0" BackgroundColor="GreenYellow" Clicked="ButtonOK_Clicked" />
         </Grid>
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" HeightRequest="32">
-            <!--<Button Text="Reset W" BackgroundColor="Red" x:Name="ButtonRestartDevice" Clicked="ButtonReset_Clicked"/>-->
+            <!--<Button Text="Reset W" BackgroundColor="Red" x:Name="ButtonRestartMachine" Clicked="ButtonReset_Clicked"/>-->
             <Button Text="Restart RPI" MinimumWidthRequest="50"  BackgroundColor="Red" Clicked="RestartRPI_Clicked" FontSize="10"/>
             <Button Text="Shutdown RPI" BackgroundColor="Red" Clicked="ShutdownRPI_Clicked" FontSize="10"/>
 

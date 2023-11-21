@@ -24,7 +24,7 @@ namespace Bound.Tablet.Helpers
                 var token = JsonConvert.DeserializeObject<Tokens>(savedTokens);
                 App.User.Tokens = token;
 
-                Debug.WriteLine("User found on device");
+                Debug.WriteLine("User found on mobile");
 
                 return true;
             }
@@ -42,11 +42,11 @@ namespace Bound.Tablet.Helpers
             {
                 user = JsonConvert.DeserializeObject<User>(savedUser);
 
-                Debug.WriteLine("User found on device");
+                Debug.WriteLine("User found on mobile");
             }
             else
             {
-                Debug.WriteLine("No User found on device");
+                Debug.WriteLine("No User found on mobile");
 
             }
 

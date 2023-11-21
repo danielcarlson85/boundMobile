@@ -50,7 +50,7 @@ namespace Bound.Tablet.ViewModels
             machineNameFromTag = tagInfo.Records.First().Message;
             App.User.DeviceData.MachineName = machineNameFromTag;
 
-            MainPageTextLabel = $"Connecting to device {machineNameFromTag}\nplease wait...";
+            MainPageTextLabel = $"Connecting to machine {machineNameFromTag}\nPlease wait...";
             try
             {
                 if (!App.IsOn)
