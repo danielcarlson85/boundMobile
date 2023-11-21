@@ -6,11 +6,11 @@ namespace Bound.Tablet.Models
     {
         public Device AzureIoTHubDevice { get; set; } = new Device();
 
-        public bool IsRunning { get; set; }
+        public bool IsRunning { get; set; } = false;
 
-        public string DeviceName { get; set; }
+        public string DeviceName { get; set; } = string.Empty;
 
-        public string ConnectionString { get; set; }
+        public string ConnectionString { get; set; } = string.Empty;
     }
 }
 

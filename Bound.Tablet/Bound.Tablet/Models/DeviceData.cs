@@ -2,10 +2,10 @@
 {
     public class DeviceData
     {
-        public string ObjectId { get; set; }
-        public string Email { get; set; }
-        public string MachineName { get; set; }
-        public int Weight { get; set; }
-        public string TotalReps  { get; set; }
+        public string ObjectId { get; set; }  = string.Empty;   
+        public string Email { get; set; } = string.Empty;   
+        public string MachineName { get; set; } = string.Empty; 
+        public int Weight { get; set; } = 0;
+        public string TotalReps { get; set; } = "0";
     }
 }

@@ -50,7 +50,7 @@ namespace Bound.Tablet.ViewModels
             machineNameFromTag = tagInfo.Records.First().Message;
             App.User.DeviceData.MachineName = machineNameFromTag;
 
-            MainPageTextLabel = ($"Connecting to device {machineNameFromTag}, please wait...");
+            MainPageTextLabel = $"Connecting to device {machineNameFromTag}\nplease wait...";
             try
             {
                 if (!App.IsOn)
@@ -69,7 +69,6 @@ namespace Bound.Tablet.ViewModels
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
                         JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'login text' sent to device.");
 
-                        JWTHttpClient.SendUserInfoToTablet();
                         CacheHelpers.SaveCachedUser();
 
                         JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC user logged in.");

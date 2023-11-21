@@ -14,8 +14,6 @@ namespace Bound.Tablet.ViewModels
     public class ExercisePageViewModel : BaseViewModel
     {
         readonly IoTHubManager ioTHubManager;
-        //IoTHubDevice device;
-        //public static System.Timers.Timer timer;
         public static string weightAsString = string.Empty;
         public static bool hasBeenStarted = false;
 
@@ -29,46 +27,14 @@ namespace Bound.Tablet.ViewModels
             LabelDeviceStatus = Color.Red;
             LabelDeviceIsRunning = Color.Red;
             App.User.DeviceData.Weight = 0;
-            //if (timer != null) timer.Stop();
-
-            //InitStatusTask();
-            //InitCounterTimer();
+            LabelWeight = "0 kg";
         }
-
-        //public void InitStatusTask()
-        //{
-        //    Task.Run(async () =>
-        //    {
-        //        while (true)
-        //        {
-        //            device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-        //            if (device == null)
-        //            {
-        //                LabelDeviceIsRunning = Color.Red;
-        //                return;
-        //            }
-
-        //            if (device.AzureIoTHubDevice.ConnectionState == DeviceConnectionState.Connected)
-        //            {
-        //                LabelDeviceStatus = Color.GreenYellow;
-        //                LabelText = "Machine ready, please choose your weight...";
-        //            }
-        //            else
-        //            {
-        //                LabelDeviceStatus = Color.Red;
-        //                LabelDeviceIsRunning = Color.Red;
-        //                LabelText = "Waiting for machine to be ready...";
-        //            }
-        //            await Task.Delay(1000);
-        //        }
-        //    });
-        //}
 
         internal async void RestartRPI_Clicked()
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartRPI");
-            JWTHttpClient.ResetUserInfoToTablet("[RestartRPI_Clicked] restartRPI");
+            JWTHttpClient.SendDebugTextToTablet("[RestartRPI_Clicked] restartRPI");
             Application.Current.MainPage = new MainPage();
         }
 
@@ -76,7 +42,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("shutdownRPI");
-            JWTHttpClient.ResetUserInfoToTablet("[ShutdownRPI_Clicked] shutdownRPI");
+            JWTHttpClient.SendDebugTextToTablet("[ShutdownRPI_Clicked] shutdownRPI");
             Application.Current.MainPage = new MainPage();
 
         }
@@ -85,7 +51,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet("[ButtonRestartDevice_Clicked] restartDevice");
+            JWTHttpClient.SendDebugTextToTablet("[ButtonRestartDevice_Clicked] restartDevice");
             Application.Current.MainPage = new MainPage();
         }
 
@@ -94,65 +60,22 @@ namespace Bound.Tablet.ViewModels
         internal async Task ButtonOK_Clicked()
         {
             CommonMethods.Vibrate();
-
-            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
             LabelText = "Starting excercise, please wait...";
 
+            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
 
-            await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet("[ButtonOK_Clicked] Starting excercise, please wait...");
+
+            JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] Starting excercise, please wait...");
             App.User.DeviceData.Weight = 0;
             Thread.Sleep(3000);
 
             hasBeenStarted = true;
-            JWTHttpClient.SendUserInfoToTablet();
             JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] User added weight and workout started.");
 
             hasBeenStarted = false;
             Application.Current.MainPage = new DonePage();
 
         }
-
-        //public void InitCounterTimer()
-        //{
-        //    //timer = new System.Timers.Timer(1000);
-        //    //timer.Elapsed += async (object sender, System.Timers.ElapsedEventArgs e) =>
-        //    {
-        //        time--;
-        //        Debug.WriteLine(time);
-
-        //        LabelWeight = "Starting device in: " + time;
-
-        //        if (time <= 0)
-        //        {
-        //            time = 5;
-        //            Debug.WriteLine("Device started...");
-        //            timer.Stop();
-        //            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-
-        //            if (device == null)
-        //            {
-        //                LabelWeight = "This machine is not yet registred, please use another one.";
-        //                return;
-        //            }
-
-        //            App.User.Device = device;
-        //            hasBeenStarted = true;
-        //            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
-        //            JWTHttpClient.SendUserInfoToTablet();
-        //            JWTHttpClient.SendDebugTextToTablet("[InitCounterTimer] User added weight and workout started.");
-
-
-        //            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-        //            {
-        //                // Your UI update code here
-        //                // For example, updating a label text
-        //                Application.Current.MainPage = new DonePage();
-        //            });
-        //        }
-        //    };
-        //}
-
 
 
         public async Task ButtonAddWeight_ClickedAsync(string weightToAdd)
@@ -162,7 +85,6 @@ namespace Bound.Tablet.ViewModels
             if (App.User.Device == null)
             {
                 App.User.Device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-
             }
 
             if (weightToAdd != "CE")
@@ -196,7 +118,6 @@ namespace Bound.Tablet.ViewModels
             CommonMethods.Vibrate();
 
             Debug.WriteLine("remove");
-            ////timer.Start();
             App.User.DeviceData.Weight--;
             LabelWeight = App.User.DeviceData.Weight.ToString();
 

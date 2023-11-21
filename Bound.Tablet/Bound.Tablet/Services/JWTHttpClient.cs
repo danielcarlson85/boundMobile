@@ -33,27 +33,11 @@ namespace Bound.Tablet.Services
             DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
         }
 
-        public static void SendUserInfoToTablet()
-        {
-            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=" + App.User.DeviceData.Weight + "&status=online&reps=0");
-        }
-
-
-
-
         public static void SendDebugTextToTablet(string debugText)
         {
             string fromdate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?DebugText="+ fromdate+ " MOBILE: " + debugText);
-        }
-
-        public static void ResetUserInfoToTablet(string debugText)
-        {
-            string fromdate = DateTime.Now.ToString("yyyyMMddHHmmss");
-
-
-            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User.Email + "&machinename=" + App.User.DeviceData.MachineName + "&weight=0" + "&status=offline&reps=0&DebugText=" + fromdate + "_MOBILE:_" + debugText);
+            new HttpClient().GetAsync($"https://boundhub.azurewebsites.net/send?name=" + App.User?.Email + "&machinename=" + App.User?.DeviceData.MachineName + "&weight=" + App.User?.DeviceData.Weight + "&status=offline&reps="+ App.User?.DeviceData.TotalReps + "&DebugText=" + fromdate + "_MOBILE:_" + debugText);
         }
     }
 }
