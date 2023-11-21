@@ -103,10 +103,8 @@ namespace Bound.Tablet.ViewModels
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
             JWTHttpClient.ResetUserInfoToTablet("[ButtonOK_Clicked] Starting excercise, please wait...");
             App.User.DeviceData.Weight = 0;
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
-
-            //App.User.Device = device;
             hasBeenStarted = true;
             await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
             JWTHttpClient.SendUserInfoToTablet();
@@ -163,17 +161,10 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
             JWTHttpClient.SendDebugTextToTablet("[ButtonAddWeight_Clicked] Button AddWeight_clicked: " + weightToAdd);
-            // timer.Stop();
             if (App.User.Device == null)
             {
                 App.User.Device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
 
-            }
-
-            if (App.User.Device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
-            {
-                //timer.Stop();
-                return;
             }
 
             if (weightToAdd != "CE")
@@ -181,11 +172,6 @@ namespace Bound.Tablet.ViewModels
                 weightAsString += weightToAdd;
                 var weight = int.Parse(weightAsString);
                 App.User.DeviceData.Weight = weight;
-                time = 5;
-                //timer.Start();
-
-
-
                 LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
                 Debug.WriteLine("Add " + LabelWeight.ToString());
             }
@@ -195,7 +181,6 @@ namespace Bound.Tablet.ViewModels
                 weightAsString = string.Empty;
                 LabelText = "Please choose your weight.";
                 LabelWeight = "0 kg";
-                //timer.Stop();
             }
 
             if (App.User.DeviceData.Weight > 300)
@@ -204,10 +189,8 @@ namespace Bound.Tablet.ViewModels
                 weightAsString = string.Empty;
                 LabelText = "Too much weight.";
                 LabelWeight = "0 kg";
-                //timer.Stop();
                 return;
             }
-
         }
 
         public void ButtonRemoveWeight_Clicked()
