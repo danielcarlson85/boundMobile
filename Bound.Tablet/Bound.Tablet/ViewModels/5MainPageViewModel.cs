@@ -47,6 +47,10 @@ namespace Bound.Tablet.ViewModels
         async void Current_OnMessageReceived(ITagInfo tagInfo)
         {
             App.UpTime = 0;
+            machineNameFromTag = tagInfo.Records.First().Message;
+            App.User.DeviceData.MachineName = machineNameFromTag;
+
+            MainPageTextLabel = ($"Connecting to device {machineNameFromTag}, please wait...");
 
             try
             {
@@ -55,9 +59,7 @@ namespace Bound.Tablet.ViewModels
                     JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC recognized logging in user...");
 
                     App.IsOn = true;
-                    machineNameFromTag = tagInfo.Records.First().Message;
-                    InitUITimer($"Connecting to device {machineNameFromTag}...", 5);
-                    App.User.DeviceData.MachineName = machineNameFromTag;
+                    
                     var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
                     if (device.AzureIoTHubDevice.ConnectionState == Microsoft.Azure.Devices.DeviceConnectionState.Connected)
                     {
@@ -79,7 +81,7 @@ namespace Bound.Tablet.ViewModels
                     else
                     {
                         Debug.WriteLine("This device is not online");
-                        InitUITimer("This device is not online, connecting...", 5);
+                        //InitUITimer("This device is not online, connecting...", 5);
                     }
                 }
 
@@ -88,7 +90,7 @@ namespace Bound.Tablet.ViewModels
             }
             catch (System.Exception ex)
             {
-                InitUITimer($"Something happend, cannot connect to device, {ex.Message}", 5);
+                //InitUITimer($"Something happend, cannot connect to device, {ex.Message}", 5);
             }
         }
 

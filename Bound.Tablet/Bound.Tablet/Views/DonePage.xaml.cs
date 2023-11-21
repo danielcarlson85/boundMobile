@@ -45,8 +45,6 @@ namespace Bound.Tablet.Views
 
             var ioTHubManager = new IoTHubManager();
 
-            if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
-
             JWTHttpClient.SendDebugTextToTablet("[buttonDone_Clicked] User done with workout...resetting machine");
             await ioTHubManager.SendTextToIoTHubDevice("saveData");
             App.User.DeviceData.Weight = 0;
@@ -63,8 +61,6 @@ namespace Bound.Tablet.Views
             CommonMethods.Vibrate();
 
             var ioTHubManager = new IoTHubManager();
-
-            if (ExercisePageViewModel.timer != null) ExercisePageViewModel.timer.Stop();
 
             JWTHttpClient.SendDebugTextToTablet("[buttonChangeWeight_Clicked] User chaning weight...");
             App.User.DeviceData.Weight = 0;

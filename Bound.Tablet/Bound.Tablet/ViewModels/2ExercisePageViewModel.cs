@@ -14,8 +14,8 @@ namespace Bound.Tablet.ViewModels
     public class ExercisePageViewModel : BaseViewModel
     {
         readonly IoTHubManager ioTHubManager;
-        IoTHubDevice device;
-        public static System.Timers.Timer timer;
+        //IoTHubDevice device;
+        //public static System.Timers.Timer timer;
         int time = 5;
         public static string weightAsString = string.Empty;
         public static bool hasBeenStarted = false;
@@ -31,40 +31,40 @@ namespace Bound.Tablet.ViewModels
             LabelDeviceIsRunning = Color.Red;
             string weightAsString = string.Empty;
             App.User.DeviceData.Weight = 0;
-            if (timer != null) timer.Stop();
+            //if (timer != null) timer.Stop();
 
-            InitStatusTask();
-            InitCounterTimer();
+            //InitStatusTask();
+            //InitCounterTimer();
         }
 
-        public void InitStatusTask()
-        {
-            Task.Run(async () =>
-            {
-                while (true)
-                {
-                    device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
-                    if (device == null)
-                    {
-                        LabelDeviceIsRunning = Color.Red;
-                        return;
-                    }
+        //public void InitStatusTask()
+        //{
+        //    Task.Run(async () =>
+        //    {
+        //        while (true)
+        //        {
+        //            device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+        //            if (device == null)
+        //            {
+        //                LabelDeviceIsRunning = Color.Red;
+        //                return;
+        //            }
 
-                    if (device.AzureIoTHubDevice.ConnectionState == DeviceConnectionState.Connected)
-                    {
-                        LabelDeviceStatus = Color.GreenYellow;
-                        LabelText = "Machine ready, please choose your weight...";
-                    }
-                    else
-                    {
-                        LabelDeviceStatus = Color.Red;
-                        LabelDeviceIsRunning = Color.Red;
-                        LabelText = "Waiting for machine to be ready...";
-                    }
-                    await Task.Delay(1000);
-                }
-            });
-        }
+        //            if (device.AzureIoTHubDevice.ConnectionState == DeviceConnectionState.Connected)
+        //            {
+        //                LabelDeviceStatus = Color.GreenYellow;
+        //                LabelText = "Machine ready, please choose your weight...";
+        //            }
+        //            else
+        //            {
+        //                LabelDeviceStatus = Color.Red;
+        //                LabelDeviceIsRunning = Color.Red;
+        //                LabelText = "Waiting for machine to be ready...";
+        //            }
+        //            await Task.Delay(1000);
+        //        }
+        //    });
+        //}
 
         internal async void RestartRPI_Clicked()
         {
@@ -91,72 +91,88 @@ namespace Bound.Tablet.ViewModels
             Application.Current.MainPage = new MainPage();
         }
 
-        internal async Task ButtonResetWeight_Clicked()
+
+
+        internal async Task ButtonOK_Clicked()
         {
             CommonMethods.Vibrate();
-            if (timer != null) timer.Stop();
-            LabelWeight = "Resetting weight on machine, please wait...";
+
+            LabelText = "Starting excercise, please wait...";
+
+
             await ioTHubManager.SendTextToIoTHubDevice("restartDevice");
-            JWTHttpClient.ResetUserInfoToTablet("[ButtonResetWeight_Clicked] resetting weight");
+            JWTHttpClient.ResetUserInfoToTablet("[ButtonOK_Clicked] Starting excercise, please wait...");
             App.User.DeviceData.Weight = 0;
-            Thread.Sleep(3000);
-            LabelWeight = "0 kg";
-            weightAsString = string.Empty;
-            await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
+            Thread.Sleep(1000);
+
+
+            //App.User.Device = device;
+            hasBeenStarted = true;
+            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
+            JWTHttpClient.SendUserInfoToTablet();
+            JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] User added weight and workout started.");
+
             hasBeenStarted = false;
+            Application.Current.MainPage = new DonePage();
+
         }
 
-        public void InitCounterTimer()
-        {
-            timer = new System.Timers.Timer(1000);
-            timer.Elapsed += async (object sender, System.Timers.ElapsedEventArgs e) =>
-            {
-                time--;
-                Debug.WriteLine(time);
+        //public void InitCounterTimer()
+        //{
+        //    //timer = new System.Timers.Timer(1000);
+        //    //timer.Elapsed += async (object sender, System.Timers.ElapsedEventArgs e) =>
+        //    {
+        //        time--;
+        //        Debug.WriteLine(time);
 
-                LabelWeight = "Starting device in: " + time;
+        //        LabelWeight = "Starting device in: " + time;
 
-                if (time <= 0)
-                {
-                    time = 5;
-                    Debug.WriteLine("Device started...");
-                    timer.Stop();
-                    var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+        //        if (time <= 0)
+        //        {
+        //            time = 5;
+        //            Debug.WriteLine("Device started...");
+        //            timer.Stop();
+        //            var device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
 
-                    if (device == null)
-                    {
-                        LabelWeight = "This machine is not yet registred, please use another one.";
-                        return;
-                    }
+        //            if (device == null)
+        //            {
+        //                LabelWeight = "This machine is not yet registred, please use another one.";
+        //                return;
+        //            }
 
-                    App.User.Device = device;
-                    hasBeenStarted = true;
-                    await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
-                    JWTHttpClient.SendUserInfoToTablet();
-                    JWTHttpClient.SendDebugTextToTablet("[InitCounterTimer] User added weight and workout started.");
-
-
-                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
-                    {
-                        // Your UI update code here
-                        // For example, updating a label text
-                        Application.Current.MainPage = new DonePage();
-                    });
-                }
-            };
-        }
+        //            App.User.Device = device;
+        //            hasBeenStarted = true;
+        //            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
+        //            JWTHttpClient.SendUserInfoToTablet();
+        //            JWTHttpClient.SendDebugTextToTablet("[InitCounterTimer] User added weight and workout started.");
 
 
+        //            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+        //            {
+        //                // Your UI update code here
+        //                // For example, updating a label text
+        //                Application.Current.MainPage = new DonePage();
+        //            });
+        //        }
+        //    };
+        //}
 
-        public void ButtonAddWeight_Clicked(string weightToAdd)
+
+
+        public async Task ButtonAddWeight_ClickedAsync(string weightToAdd)
         {
             CommonMethods.Vibrate();
             JWTHttpClient.SendDebugTextToTablet("[ButtonAddWeight_Clicked] Button AddWeight_clicked: " + weightToAdd);
-            timer.Stop();
-
-            if (device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
+            // timer.Stop();
+            if (App.User.Device == null)
             {
-                timer.Stop();
+                App.User.Device = await ioTHubManager.Get(App.User.DeviceData.MachineName);
+
+            }
+
+            if (App.User.Device.AzureIoTHubDevice.ConnectionState != DeviceConnectionState.Connected)
+            {
+                //timer.Stop();
                 return;
             }
 
@@ -166,7 +182,10 @@ namespace Bound.Tablet.ViewModels
                 var weight = int.Parse(weightAsString);
                 App.User.DeviceData.Weight = weight;
                 time = 5;
-                timer.Start();
+                //timer.Start();
+
+
+
                 LabelWeight = App.User.DeviceData.Weight.ToString() + " kg";
                 Debug.WriteLine("Add " + LabelWeight.ToString());
             }
@@ -176,7 +195,7 @@ namespace Bound.Tablet.ViewModels
                 weightAsString = string.Empty;
                 LabelText = "Please choose your weight.";
                 LabelWeight = "0 kg";
-                timer.Stop();
+                //timer.Stop();
             }
 
             if (App.User.DeviceData.Weight > 300)
@@ -185,7 +204,7 @@ namespace Bound.Tablet.ViewModels
                 weightAsString = string.Empty;
                 LabelText = "Too much weight.";
                 LabelWeight = "0 kg";
-                timer.Stop();
+                //timer.Stop();
                 return;
             }
 
@@ -197,7 +216,7 @@ namespace Bound.Tablet.ViewModels
 
             Debug.WriteLine("remove");
             time = 0;
-            timer.Start();
+            ////timer.Start();
             App.User.DeviceData.Weight--;
             LabelWeight = App.User.DeviceData.Weight.ToString();
 

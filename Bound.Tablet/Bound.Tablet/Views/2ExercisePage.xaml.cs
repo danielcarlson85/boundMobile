@@ -24,12 +24,12 @@ namespace Bound.Tablet.Views
             BindingContext = viewModel = new ExercisePageViewModel();
         }
 
-        private void ButtonAddWeight_Clicked(object sender, System.EventArgs e)
+        private async void ButtonAddWeight_Clicked(object sender, System.EventArgs e)
         {
             Button clickedButton = (Button)sender; // Get the button that was clicked
 
             string weightToAdd = clickedButton.Text;
-            viewModel.ButtonAddWeight_Clicked(weightToAdd);
+            await viewModel.ButtonAddWeight_ClickedAsync(weightToAdd);
         }
 
         public void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)
@@ -51,16 +51,12 @@ namespace Bound.Tablet.Views
             base.OnDisappearing();
         }
 
-        private async void ButtonReset_Clicked(object sender, System.EventArgs e)
+        private async void ButtonOK_Clicked(object sender, System.EventArgs e)
         {
-            await viewModel.ButtonResetWeight_Clicked();
+            await viewModel.ButtonOK_Clicked();
 
         }
-        
-        private async void ButtonDoneExercising_Clicked(object sender, System.EventArgs e)
-        {
-
-        }
+       
 
         private void ButtonRestartDevice_Clicked(object sender, System.EventArgs e)
         {
