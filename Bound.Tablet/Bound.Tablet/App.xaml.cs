@@ -47,26 +47,26 @@ namespace Bound.NFC
         }
 
 
-        private void InitStartUpTimeTimer()
-        {
-            timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    UpTime++;
+        //private void InitStartUpTimeTimer()
+        //{
+        //    timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+        //    {
+        //        Device.BeginInvokeOnMainThread(() =>
+        //        {
+        //            UpTime++;
 
-                    if (UpTime > 300)
-                    {
-                        Current.MainPage = new MainPage();
-                        UpTime = 0;
-                    }
+        //            if (UpTime > 300)
+        //            {
+        //                Current.MainPage = new MainPage();
+        //                UpTime = 0;
+        //            }
 
-                    Debug.WriteLine(UpTime);
-                });
-            };
+        //            Debug.WriteLine(UpTime);
+        //        });
+        //    };
 
-            timer.Start();
-        }
+        //    timer.Start();
+        //}
 
         protected override void OnStart()
         {

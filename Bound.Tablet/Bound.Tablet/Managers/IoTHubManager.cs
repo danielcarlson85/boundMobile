@@ -146,7 +146,7 @@ namespace Devicemanager.API.Managers
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return HttpStatusCode.NotFound;
             }
@@ -185,7 +185,7 @@ namespace Devicemanager.API.Managers
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return HttpStatusCode.NotFound;
             }
@@ -235,7 +235,7 @@ namespace Devicemanager.API.Managers
         {
             var lastReceivedMessage = string.Empty;
 
-            var deviceClient = DeviceClient.CreateFromConnectionString(Constants.ioTHubConnectionString, "Mobile");
+            //var deviceClient = DeviceClient.CreateFromConnectionString(Constants.ioTHubConnectionString, "Mobile");
 
             //await Task.Run(async () =>
             //{

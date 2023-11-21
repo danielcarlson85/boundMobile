@@ -16,7 +16,6 @@ namespace Bound.Tablet.ViewModels
         readonly IoTHubManager ioTHubManager;
         //IoTHubDevice device;
         //public static System.Timers.Timer timer;
-        int time = 5;
         public static string weightAsString = string.Empty;
         public static bool hasBeenStarted = false;
 
@@ -29,7 +28,6 @@ namespace Bound.Tablet.ViewModels
             LabelMachineName = "Current machine: " + App.User.DeviceData.MachineName;
             LabelDeviceStatus = Color.Red;
             LabelDeviceIsRunning = Color.Red;
-            string weightAsString = string.Empty;
             App.User.DeviceData.Weight = 0;
             //if (timer != null) timer.Stop();
 
@@ -198,7 +196,6 @@ namespace Bound.Tablet.ViewModels
             CommonMethods.Vibrate();
 
             Debug.WriteLine("remove");
-            time = 0;
             ////timer.Start();
             App.User.DeviceData.Weight--;
             LabelWeight = App.User.DeviceData.Weight.ToString();

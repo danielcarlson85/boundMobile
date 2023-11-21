@@ -15,7 +15,7 @@ namespace Bound.Tablet.ViewModels
     public class MainPageViewModel : BaseViewModel
     {
         bool _eventsAlreadySubscribed = false;
-        private IoTHubManager ioTHubManager;
+        private readonly IoTHubManager ioTHubManager;
         public const string MIME_TYPE = "application/com.companyname.Bound.NFC";
         public string BaseText = "Put your mobile phone on the NFC tag that you can find on the machine.";
 
@@ -51,7 +51,6 @@ namespace Bound.Tablet.ViewModels
             App.User.DeviceData.MachineName = machineNameFromTag;
 
             MainPageTextLabel = ($"Connecting to device {machineNameFromTag}, please wait...");
-
             try
             {
                 if (!App.IsOn)
@@ -88,27 +87,27 @@ namespace Bound.Tablet.ViewModels
                 App.IsOn = false;
 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 //InitUITimer($"Something happend, cannot connect to device, {ex.Message}", 5);
             }
         }
 
-        private void InitUITimer(string text, int time)
-        {
-            MainPageTextLabel = text;
+        //private void InitUITimer(string text, int time)
+        //{
+        //    MainPageTextLabel = text;
 
-            System.Timers.Timer timer = new System.Timers.Timer(time * 1000);
-            timer.Start();
-            timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        MainPageTextLabel = BaseText;
-                    });
-                    timer.Stop();
-                };
-        }
+        //    System.Timers.Timer timer = new System.Timers.Timer(time * 1000);
+        //    timer.Start();
+        //    timer.Elapsed += (object sender, System.Timers.ElapsedEventArgs e) =>
+        //        {
+        //            Device.BeginInvokeOnMainThread(() =>
+        //            {
+        //                MainPageTextLabel = BaseText;
+        //            });
+        //            timer.Stop();
+        //        };
+        //}
 
 
 

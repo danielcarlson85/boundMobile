@@ -35,8 +35,7 @@ namespace Bound.Tablet.Views
         public void ButtonRemoveWeight_Clicked(object sender, System.EventArgs e)
         {
             Button clickedButton = (Button)sender; // Get the button that was clicked
-
-            string buttonText = clickedButton.Text;
+            _ = clickedButton.Text;
             viewModel.ButtonRemoveWeight_Clicked();
         }
 

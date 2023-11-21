@@ -38,7 +38,7 @@ namespace Bound.Tablet.Views
         {
         }
 
-        private async void buttonDone_Clicked(object sender, System.EventArgs e)
+        private async void ButtonDone_Clicked(object sender, System.EventArgs e)
         {
             App.UpTime = 0;
             CommonMethods.Vibrate();
@@ -55,7 +55,7 @@ namespace Bound.Tablet.Views
 
         }
 
-        private async void buttonChangeWeight_Clicked(object sender, System.EventArgs e)
+        private async void ButtonChangeWeight_Clicked(object sender, System.EventArgs e)
         {
             App.UpTime = 0;
             CommonMethods.Vibrate();

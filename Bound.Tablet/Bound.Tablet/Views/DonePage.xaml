@@ -24,13 +24,13 @@
         </Grid.RowDefinitions>
 
         <ImageButton Grid.Row="1" HeightRequest="100" WidthRequest="300"  Margin="0,50,0,0" BackgroundColor="#333333" CornerRadius="90" BorderWidth="2" BorderColor="Gray"
-                     Source="Resources/icon.png" VerticalOptions="Center" HorizontalOptions="Center"  x:Name="buttonDone"  Clicked="buttonDone_Clicked" />
+                     Source="Resources/icon.png" VerticalOptions="Center" HorizontalOptions="Center"  x:Name="buttonDone"  Clicked="ButtonDone_Clicked" />
 
         <Label Grid.Row="1" Text="Press the button below when you are finished with your workout." WidthRequest="280"
                HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" TextColor="GreenYellow" FontAttributes="Bold" FontSize="16" HorizontalTextAlignment="Center" Margin="0,-20"/>
 
         <Button Grid.Row="2" HeightRequest="50" WidthRequest="200"  Margin="0,50,0,0" BackgroundColor="#333333" CornerRadius="90" BorderWidth="2" BorderColor="Gray"
-                   Text="Change weight"  VerticalOptions="Center" HorizontalOptions="Center"  TextColor="GreenYellow" Clicked="buttonChangeWeight_Clicked" />
+                   Text="Change weight"  VerticalOptions="Center" HorizontalOptions="Center"  TextColor="GreenYellow" Clicked="ButtonChangeWeight_Clicked" />
 
 
 
