@@ -97,6 +97,7 @@ namespace Bound.Tablet.ViewModels
         {
             CommonMethods.Vibrate();
 
+            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
             LabelText = "Starting excercise, please wait...";
 
 
@@ -106,7 +107,6 @@ namespace Bound.Tablet.ViewModels
             Thread.Sleep(3000);
 
             hasBeenStarted = true;
-            await ioTHubManager.SendStartTextToIoTHubDevice(App.User);
             JWTHttpClient.SendUserInfoToTablet();
             JWTHttpClient.SendDebugTextToTablet("[ButtonOK_Clicked] User added weight and workout started.");
 

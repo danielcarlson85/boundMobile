@@ -70,7 +70,7 @@ namespace Bound.Tablet.ViewModels
                         await ioTHubManager.SendLoginTextToIoTHubDevice(App.User);
                         JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] 'login text' sent to device.");
 
-                        //JWTHttpClient.SendUserInfoToTablet();
+                        JWTHttpClient.SendUserInfoToTablet();
                         CacheHelpers.SaveCachedUser();
 
                         JWTHttpClient.SendDebugTextToTablet("[Current_OnMessageReceived] NFC user logged in.");
